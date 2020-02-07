@@ -1,0 +1,20 @@
+<lightbox show="vm.lightbox.add" on-close="vm.hideLightbox('add')">
+    <form ng-submit="vm.addExclusion()">
+        <div class="flex">
+            <div>
+                <div class="dateSized">
+                    <label class="labelSized">Date de début :</label>
+                    <input id="startDate" type="date" name="startDate" class="newDate" ng-model="vm.exclusion.start" required>
+                </div>
+                <div class="dateSized">
+                    <label class="labelSized">Date de fin :</label>
+                    <input id="endDate" type="date" name="endDate" class="newDate" ng-model="vm.exclusion.end" required>
+                </div>
+            </div>
+            <div>
+                <input type="submit" class="button" ng-click="vm.hideLightbox('add')" i18n-value="admin.validate" />
+                <input type="button" ng-click="vm.hideLightbox('add')" i18n-value="admin.cancel" />
+            </div>
+        </div>
+    </form>
+</lightbox>

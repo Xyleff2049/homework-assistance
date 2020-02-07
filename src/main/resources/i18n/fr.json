@@ -1,0 +1,39 @@
+{
+  "homework-assistance.title": "Aide aux devoirs",
+  "homework-assistance.availabilityTitle": "Service accessible :",
+
+  "student.title": "Elève",
+  "student.subject": "Matière",
+  "student.tel": "Numéro de téléphone sur lequel rappeler",
+  "student.rdv.title": "Date et créneau du rappel",
+  "student.rdv.day": "Le",
+  "student.rdv.from": "A partir de ",
+  "student.rdv.connector": "h",
+  "student.otherInformations" : "Informations complémentaires",
+  "student.validate": "Envoyer ma demande",
+
+  "admin.title": "Paramétrage du service Aide aux devoirs",
+  "admin.period.title": "Période(s) de fermeture",
+  "admin.period.from": "du ",
+  "admin.period.to": " au ",
+  "admin.modify": "Modifier",
+  "admin.delete": "Supprimer",
+  "admin.add": "Ajouter une période de fermeture",
+  "admin.availabilityDays": "Jour de la semaine disponibles",
+  "admin.availabilityHours.title": "Plages horraires disponibles",
+  "admin.availabilityHours.from": "De :",
+  "admin.availabilityHours.connector": "h",
+  "admin.availabilityHours.to": "A :",
+
+  "admin.monday": "L",
+  "admin.tuesday": "M",
+  "admin.wednesday": "M",
+  "admin.thursday": "J",
+  "admin.friday": "V",
+  "admin.saturday": "S",
+  "admin.sunday": "D",
+
+  "admin.validate": "Valider",
+  "admin.cancel": "Annuler",
+  "admin.close": "Fermer"
+}

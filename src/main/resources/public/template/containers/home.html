@@ -1,0 +1,77 @@
+<div ng-controller="HomeController as vm" class="flex">
+
+    <!--    Column presentation -->
+    <div class="main-column twelve-mobile">
+        <article class="style-bord-with-over-effect">
+            <div class="row intern-prez-row">
+                <div class="flex">
+                    <i class="dot-circled hg-icon"></i>
+                    <div class="multilines">[[vm.config.messages.header]]</div>
+                    <button ng-if="vm.isAdmin" type="button" class="classic-button" ng-click="vm.showLightbox('header')">
+                        <i class="modif lg-icon icon-spacing"></i>
+                    </button>
+                </div>
+            </div>
+            <div id="offer" class="row intern-prez-row important-txt">
+                <div class="flex">
+                    <div class="multilines">[[vm.config.messages.body]]</div>
+                    <button ng-if="vm.isAdmin" type="button" class="classic-button" ng-click="vm.showLightbox('body')">
+                        <i class="modif lg-icon"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="row intern-prez-row">
+                <div class="column">
+                    <p id="availabilityTitle"><i18n>homework-assistance.availabilityTitle</i18n></p>
+                    <div class="flex">
+                        <p>
+                            <i class="calendar-o lg-icon icon-spacing"></i>[[vm.config.messages.days]]
+                            <div ng-if="vm.isAdmin">
+                                <button type="button" class="classic-button" ng-click="vm.showLightbox('days')">
+                                    <i class="modif lg-icon icon-spacing"></i>
+                                </button>
+                            </div>
+                        </p>
+                    </div>
+                    <div class="flex">
+                        <p>
+                            <i class="clock lg-icon icon-spacing"></i>[[vm.config.messages.time]]
+                            <div ng-if="vm.isAdmin">
+                                <button type="button" class="classic-button" ng-click="vm.showLightbox('time')">
+                                    <i class="modif lg-icon icon-spacing"></i>
+                                </button>
+                            </div>
+                        </p>
+                    </div>
+                    <div class="flex">
+                        <p>
+                            <i class="info-circled-1 lg-icon icon-spacing"></i>[[vm.config.messages.info]]
+                            <div ng-if="vm.isAdmin">
+                                <button type="button" class="classic-button" ng-click="vm.showLightbox('info')">
+                                    <i class="modif lg-icon icon-spacing"></i>
+                                </button>
+                            </div>
+                        </p>
+                    </div>
+                </div>
+                <div class="column">
+
+                </div>
+            </div>
+        </article>
+    </div>
+
+    <!--    Column form (admin) if user has proper rights-->
+    <div ng-if="vm.isAdmin"
+         ng-include="'/homework-assistance/public/template/home/admin/admin-form.html'"
+         class="main-column twelve-mobile">
+    </div>
+    <!--    Column form (student) if user has not proper rights-->
+    <div ng-if="!vm.isAdmin"
+         ng-include="'/homework-assistance/public/template/home/student/student-form.html'"
+         class="main-column twelve-mobile">
+    </div>
+
+    <!--    Lightboxes -->
+    <div ng-include="'/homework-assistance/public/template/lightboxes/index.html'"></div>
+</div>

@@ -1,0 +1,24 @@
+<div class="important-txt"><i18n>admin.period.title</i18n></div>
+<div id="periods">
+    <table>
+        <tbody>
+        <tr ng-repeat="exclusion in vm.config.exclusions track by $index">
+            <td style="width:400px">
+                <i18n>admin.period.from</i18n>[[exclusion.start]]<i18n>admin.period.to</i18n>[[exclusion.end]]
+            </td>
+            <td style="width:200px">
+                <button type="button" class="classic-button" ng-click="vm.showLightbox('delete', $index)">
+                    <i class="suppr md-icon"></i>
+                </button>
+                <i18n>admin.delete</i18n>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<p id="add-period">
+    <button type="button" ng-click="vm.showLightbox('add')">
+        <i class="plus md-icon"></i>
+    </button>
+    <i18n>admin.add</i18n>
+</p>

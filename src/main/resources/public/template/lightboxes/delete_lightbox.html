@@ -1,0 +1,9 @@
+<lightbox show="vm.lightbox.delete" on-close="vm.hideLightbox('delete')">
+    <form ng-submit="vm.deleteExclusion()">
+        <div class="flex">
+            <label>Êtes-vous sûr(e) de vouloir supprimer la période <i18n>admin.period.from</i18n>[[vm.exclusion.start]]<i18n>admin.period.to</i18n>[[vm.exclusion.end]] ? </label>
+            <input type="submit" class="button inline" ng-click="vm.hideLightbox('delete')" i18n-value="admin.validate" />
+            <input type="button" class="inline" ng-click="vm.hideLightbox('delete')" i18n-value="admin.cancel" />
+        </div>
+    </form>
+</lightbox>

@@ -1,0 +1,18 @@
+    {
+      "name": "fr.openent~homework-assistance~0.1-SNAPSHOT",
+      "config": {
+        "main" : "fr.openent.homeworkAssistance.HomeworkAssistance",
+        "port" : 8330,
+        "app-name" : "Homework-assistance",
+        "path-prefix" : "homework-assistance",
+    	"app-address" : "/homework-assistance",
+    	"app-icon" : "Homework-assistance-large",
+        "host": "${host}",
+        "ssl" : $ssl,
+        "auto-redeploy": false,
+        "userbook-host": "${host}",
+        "app-registry.port" : 8012,
+        "mode" : "${mode}",
+        "entcore.port" : 8009
+      }
+    }

@@ -1,0 +1,346 @@
+body.homework-assistance {
+
+  .style-bord-with-over-effect {
+    box-shadow: 0 1px 5px rgba(0, 0, 0, 0.3);
+    border-radius: 5px
+  }
+
+  .main-column {
+    display: flex;
+    flex: 1 1 0px;
+    float: left;
+    width: 46%;
+    padding-left: 2%;
+    padding-right: 2%;
+    align-self: stretch;
+  }
+
+  .column {
+    float: left;
+    width: auto;
+    padding-left: 2%;
+    padding-right: 2%;
+  }
+
+  .row:after {
+    content: "";
+    display: table;
+    clear: both;
+  }
+
+  #main-section {
+    padding-left: 5%;
+    padding-right: 5%;
+  }
+
+  .intern-prez-row {
+    padding-top: 5%;
+    padding-bottom: 5%;
+  }
+
+  article {
+    width: 100%;
+    padding-right: 30px !important;
+    padding-left: 30px !important;
+    margin: 0;
+  }
+
+  .block-line {
+    margin-bottom: 5%;
+  }
+
+  .block-line > p {
+    margin-bottom: 2%;
+  }
+
+  .important-txt {
+    font-size: 18px;
+    color: black;
+  }
+
+  .important-title {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 5%;
+  }
+
+  #offer {
+    text-align: center;
+    padding-right: 15%;
+    padding-left: 15%;
+  }
+
+  #availabilityTitle {
+    font-size: 18px;
+    color: black;
+  }
+
+  .inline {
+    display: inline;
+    list-style: none; /* pour enlever les puces sur IE7 */
+    margin: 5px;
+  }
+
+  .icon-spacing {
+    padding-right: 15px;
+    padding-left: 15px;
+  }
+
+  #date {
+    width: 25%;
+  }
+
+  #other-informations {
+    width: 80%;
+  }
+
+  #periods {
+    min-height: 100px;
+    height: 100px; /*pour IE qui comprend rien, et qui ne reconnait pas min-height, mais qui comprend mal height*/
+    min-width: 300px;
+    width: 100%; /*pour IE qui comprend rien*/
+    overflow-y: scroll; /*pour activer les scrollbarres*/
+  }
+
+  #periods tr {
+    border: 0px transparent;
+  }
+
+  #periods tr td:first-child {
+    font-size: 18px;
+  }
+
+  #periods th, #periods td {
+    padding: 5px;
+    text-align: left;
+  }
+
+  table {
+    margin-bottom: 0px !important;
+  }
+
+  #add-period {
+    color: darkorange;
+    height: 50px;
+  }
+
+  button {
+    margin-right: 10px !important;
+    padding: 0 !important;
+  }
+
+  .classic-button {
+    background: none !important;
+    box-shadow: none;
+    margin: 0 0 10px 0 !important;
+    padding-right: 10px !important;
+  }
+
+  .flex {
+    display: flex;
+    align-items: center;
+  }
+
+
+  /* Icons */
+
+  .xs-icon {
+    font-size: 10px;
+  }
+
+  .sm-icon {
+    font-size: 16px;
+  }
+
+  .md-icon {
+    font-size: 20px;
+  }
+
+  .lg-icon {
+    font-size: 24px;
+  }
+
+  .hg-icon {
+    font-size: 40px;
+  }
+
+  .dot-circled {
+    margin: 3%;
+  }
+
+  .dot-circled::before {
+    @include fonticon();
+    content: '\e845';
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    background-image: none;
+    color: darkorange;
+    vertical-align: middle;
+  }
+
+  .calendar-o::before {
+    @include fonticon();
+    content: '\e917';
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    background-image: none;
+    color: darkorange;
+    vertical-align: middle;
+  }
+
+  .clock::before {
+    @include fonticon();
+    content: '\f017';
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    background-image: none;
+    color: darkorange;
+    vertical-align: middle;
+  }
+
+  .info-circled-1::before {
+    @include fonticon();
+    content: '\e8d3';
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    background-image: none;
+    color: darkorange;
+    vertical-align: middle;
+  }
+
+  .cahier-de-textes::before {
+    @include fonticon();
+    content: '\e910';
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    background-image: none;
+    color: darkorange;
+    vertical-align: middle;
+  }
+
+  .modif::before {
+    @include fonticon();
+    content: '\e858';
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    background-image: none;
+    margin-right: 5px;
+    color: dimgrey;
+    vertical-align: middle;
+  }
+
+  .suppr::before {
+    @include fonticon();
+    content: '\e8cf';
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    background-image: none;
+    margin-right: 5px;
+    color: dimgrey;
+    vertical-align: middle;
+  }
+
+  .plus::before {
+    @include fonticon();
+    content: '\e85e';
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    background-image: none;
+    color: white;
+    vertical-align: middle;
+  }
+
+  .phone::before {
+    @include fonticon();
+    content: '\f095';
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    background-image: none;
+    margin-right: 5px;
+    color: dimgrey;
+    vertical-align: middle;
+  }
+
+  /* Checkboxes */
+
+  #weekdays {
+    height: 80px;
+  }
+
+  ul {
+    padding: 0;
+    margin: 0;
+    clear: both;
+  }
+
+  li {
+    list-style-type: none;
+    list-style-position: outside;
+    padding-right: 10px;
+    float: left;
+  }
+
+  input[type="checkbox"]:not(:checked),
+  input[type="checkbox"]:checked {
+    position: absolute;
+    left: -9999%;
+  }
+
+  input[type="checkbox"] + label {
+    display: inline-block;
+    padding: 8px 15px 8px 15px;
+    cursor: pointer;
+    border: 1px solid transparent;
+    border-radius: 3px;
+    color: black;
+    background-color: lightgrey;
+  }
+
+  input[type="checkbox"]:checked + label {
+    border: 1px solid transparent;
+    border-radius: 3px;
+    box-shadow: 0px 10px 10px rgba(0, 0, 0, .2);
+    color: white;
+    background-color: darkorange;
+  }
+
+  /* Custom select */
+
+  select {
+    min-width: 50px !important;
+  }
+
+  .custom-select-1 {
+    position: relative;
+    width: 100px;
+    margin-left: 10px !important;
+  }
+
+  .custom-select-2 {
+    position: relative;
+    width: 100px;
+    margin-right: 20px !important;
+  }
+
+
+
+
+  .multilines {
+    white-space: pre-line;
+  }
+
+  .newMessage {
+    width: 50%;
+    margin: 0 2% 0 2%;
+  }
+
+  .newDate {
+    margin: 0 10% 0 5%;
+    float: right;
+  }
+
+  .dateSized {
+    width : 300px;
+  }
+
+}

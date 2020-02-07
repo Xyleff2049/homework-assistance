@@ -1,0 +1,41 @@
+<article class="style-bord-with-over-effect">
+    <form id="formRight" ng-submit="vm.sendForm()">
+        <div class="block-line">
+            <p><i18n>student.title</i18n></p>
+            <div>
+                <span class="important-title">
+                    [[vm.callback.userdata.nom]] [[vm.callback.userdata.prenom]] ([[vm.callback.userdata.classe]])
+                </span>
+            </div>
+        </div>
+        <div class="block-line">
+            <p><i18n>student.subject</i18n></p>
+            <select class="style-bord-with-over-effect" ng-model="vm.callback.userdata.service" required>
+                <option id="Francais" value="76">Français</option>
+                <option id="Anglais" value="80">Anglais</option>
+                <option id="Espagnol" value="81">Espagnol</option>
+                <option id="Mathematiques" value="77">Mathématiques</option>
+                <option id="Sciences-physiques" value="78">Sciences physiques</option>
+            </select>
+        </div>
+        <div class="block-line">
+            <p><i18n>student.tel</i18n></p>
+            <div>
+                <i class="phone lg-icon"></i>
+                <input type="text" placeholder="+33 06..." ng-model="vm.callback.destination" required>
+            </div>
+        </div>
+        <div class="block-line">
+            <p><i18n>student.rdv.title</i18n></p>
+            <div ng-include="'/homework-assistance/public/template/home/student/student-selectboxes.html'"></div>
+        </div>
+        <div class="block-line">
+            <p><i18n>student.otherInformations</i18n></p>
+            <input id="other-informations"
+                   type="text"
+                   placeholder="Détails sur votre problème, thème, chapitre, ..."
+                   ng-model="vm.callback.informations_complementaires">
+        </div>
+        <input type="submit" value="Envoyer ma demande" style="float:right;">
+    </form>
+</article>
