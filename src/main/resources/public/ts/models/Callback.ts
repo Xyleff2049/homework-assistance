@@ -36,19 +36,11 @@ export class Callback {
         this.callback_time = new Time();
         this.userdata = new Userdata();
         this.informations_complementaires = null;
-        this.key = null;
-        this.ip_server = null;
-        this.address = "https://ng1.preprod-ent.fr/kiamo";
+        this.key = "68d27ac06e53fef962c49a4b0d18691019c3a31a";
+        this.ip_server = "adresse_kiamo";
+        this.address = "http://kiamo:3000";
         // this.address = "http://" + this.ip_server + "/api/service/" + this.userdata.service + "/tasks?token=" + this.key;
         // this.address = "http://" + this.ip_server + "/api/serviceS/" + this.userdata.service + "/tasks?token=" + this.key;
-    }
-
-    mongoToModel(data: any) {
-        this.destination = data.destination;
-        this.callback_date = data.callback_date;
-        this.callback_time = data.callback_time;
-        this.userdata = data.userdata;
-        this.informations_complementaires = data.informations_complementaires;
     }
 
     toJson(): Object {

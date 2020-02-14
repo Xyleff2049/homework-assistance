@@ -1,13 +1,12 @@
-import {idiom, model, moment, ng, template} from 'entcore';
+import {idiom, model, ng, template} from 'entcore';
 import {Callback, services} from '../models/Callback';
 import {Config, Exclusion} from '../models/Config';
 import {DateUtils} from '../utils/date';
-import {CallbackService, ConfigService} from '../services';
+import {callbackService, configService} from '../services';
 
 interface ViewModel {
     callback: Callback;
     error: boolean;
-
     config: Config;
     lightbox: {
         delete: boolean,
@@ -19,7 +18,6 @@ interface ViewModel {
     message: string;
     exclusion: Exclusion;
     index: number;
-    isAdmin: boolean;
 
     sendForm(): Promise<void>;
     saveConfig(): Promise<void>;
@@ -33,11 +31,10 @@ interface ViewModel {
 
 
 export const homeController = ng.controller('HomeController', ['$scope', 'ConfigService', 'CallbackService',
-    function ($scope, ConfigService: ConfigService, CallbackService: CallbackService) {
+    function ($scope) {
 
     $scope.lang = idiom;
     $scope.template = template;
-
     const vm: ViewModel = this;
 
     vm.callback = new Callback();
@@ -54,27 +51,24 @@ export const homeController = ng.controller('HomeController', ['$scope', 'Config
         modifier: false
     };
     vm.modifier = "";
-    vm.isAdmin = $scope.hasRight('admin');
-    // vm.isAdmin = false;
+
 
     vm.sendForm = async (): Promise<void> => {
         let dateValid = checkDate();
         let timeValid = checkTime();
         if (dateValid && timeValid) {
-            let data = await CallbackService.post(vm.callback);
-            vm.callback.mongoToModel(data);
+            let data = await callbackService.post(vm.callback);
+            printDataCallback(data);
         }
         else {
             vm.showLightbox('error');
         }
-        console.log("sendForm");
-        console.log(vm.callback);
         $scope.safeApply();
     };
 
     vm.saveConfig = async (): Promise<void> => {
-        // vm.config.exclusions.sort((ex1,ex2) => sortExclusion(ex1,ex2));
-        let data = await ConfigService.put(vm.config);
+        vm.config.exclusions.sort((ex1,ex2) => sortExclusion(ex1,ex2));
+        let data = await configService.put(vm.config);
         vm.config.mongoToModel(data);
         console.log("saveConfig");
         console.log(vm.config);
@@ -189,7 +183,7 @@ export const homeController = ng.controller('HomeController', ['$scope', 'Config
 
 
     const loadConfig = async (): Promise<void> => {
-        let data = await ConfigService.get();
+        let data = await configService.get();
         vm.config.mongoToModel(data);
         console.log("loadConfig");
         console.log(vm.config);
@@ -288,20 +282,49 @@ export const homeController = ng.controller('HomeController', ['$scope', 'Config
         vm.modifier = name;
     };
 
+    const printDataCallback = (data: any): void => {
+        console.log(JSON.parse(data.parameters.toString()));
+    };
+
     const sortExclusion = (ex1:Exclusion, ex2:Exclusion): number => {
         let startValues1 = ex1.start.split("/");
-        let startValues2 = ex2.end.split("/");
+        let startValues2 = ex2.start.split("/");
 
-        startValues1 = [parseInt(startValues1[0]), parseInt(startValues1[1])-1, parseInt(startValues1[2])];
-        startValues2 = [parseInt(startValues2[0]), parseInt(startValues2[1])-1, parseInt(startValues2[2])];
+        let intValues1 = [parseInt(startValues1[0]), parseInt(startValues1[1])-1, parseInt(startValues1[2])];
+        let intValues2 = [parseInt(startValues2[0]), parseInt(startValues2[1])-1, parseInt(startValues2[2])];
 
-
-        return 0;
+        // Compare years
+        if (intValues1[2] > intValues2[2]) {
+            return -1;
+        }
+        else if (intValues1[2] < intValues2[2]) {
+            return 1;
+        }
+        else { // Compare months if same years
+            if (intValues1[1] > intValues2[1]) {
+                return -1;
+            }
+            else if (intValues1[1] < intValues2[1]) {
+                return 1;
+            }
+            else { // Compare days if same months
+                if (intValues1[0] > intValues2[0]) {
+                    return -1;
+                }
+                else if (intValues1[0] < intValues2[0]) {
+                    return 1;
+                }
+                else {
+                    console.log("Two periods must not start or end the same day (cf 'checkExclusion' function in home.ts file).");
+                    return 0;
+                }
+            }
+        }
     };
 
     const init = async (): Promise<void> => {
         await loadConfig();
-        if (!vm.isAdmin) {
+        if ($scope.hasRight('student')) {
             await loadCallback();
         }
     };

@@ -31,7 +31,8 @@ public class ConfigurationController extends ControllerHelper {
     @ApiDoc("Update config")
     @SecuredAction(HomeworkAssistance.ADMIN)
     public void update(HttpServerRequest request) {
-        RequestUtils.bodyToJson(request, settings -> configurationService.update(defaultResponseHandler(request), settings));
+        RequestUtils.bodyToJson(request, settings ->
+                configurationService.update(defaultResponseHandler(request), settings));
     }
 
 }

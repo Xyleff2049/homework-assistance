@@ -14,7 +14,7 @@ public class HomeworkAssistanceController extends ControllerHelper {
     }
 
     @Get("")
-    @SecuredAction("authenticated")
+    @SecuredAction("view")
     public void view (HttpServerRequest request) {
         renderView(request, new JsonObject());
     }

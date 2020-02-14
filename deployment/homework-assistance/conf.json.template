@@ -13,6 +13,11 @@
         "userbook-host": "${host}",
         "app-registry.port" : 8012,
         "mode" : "${mode}",
-        "entcore.port" : 8009
+        "entcore.port" : 8009,
+        "kiamo": {
+          "key": "",
+          "server": ""
+        },
+        "address_kiamo": "${address_kiamo}"
       }
     }

@@ -3,9 +3,9 @@ import fr.openent.homeworkAssistance.HomeworkAssistance;
 import fr.openent.homeworkAssistance.service.CallbackService;
 import fr.openent.homeworkAssistance.service.impl.DefaultCallbackService;
 import fr.wseduc.rs.*;
-import fr.wseduc.security.ActionType;
 import fr.wseduc.security.SecuredAction;
 import fr.wseduc.webutils.request.RequestUtils;
+import io.vertx.core.Vertx;
 import io.vertx.core.http.HttpServerRequest;
 import org.entcore.common.controller.ControllerHelper;
 import org.entcore.common.http.filter.Trace;
@@ -15,17 +15,17 @@ public class CallbackController extends ControllerHelper {
 
     private CallbackService callbackService;
 
-    public CallbackController() {
+    public CallbackController(Vertx vertx) {
         super();
-        this.callbackService = new DefaultCallbackService();
+        this.callbackService = new DefaultCallbackService(vertx);
     }
 
     @Post("/services/:id/callback")
     @ApiDoc("Send data to Kiamo")
-    @SecuredAction(value= "",  type = ActionType.AUTHENTICATED)
-//    @SecuredAction(HomeworkAssistance.STUDENT)
-//    @Trace("POST_EVENT")
+    @SecuredAction(HomeworkAssistance.STUDENT)
+    @Trace("SEND_FORM")
     public void send(HttpServerRequest request) {
-        RequestUtils.bodyToJson(request, form -> callbackService.send(form, defaultResponseHandler(request)));
+        RequestUtils.bodyToJson(request, form ->
+                callbackService.send(form, defaultResponseHandler(request)));
     }
 }

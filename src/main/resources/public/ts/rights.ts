@@ -1,6 +1,6 @@
 const rights = {
     workflow: {
-        admin: 'fr.openent.homeworkAssistance.controller.ConfigurationController|get',
+        admin: 'fr.openent.homeworkAssistance.controller.ConfigurationController|update',
         student: 'fr.openent.homeworkAssistance.controller.CallbackController|send'
     }
 };

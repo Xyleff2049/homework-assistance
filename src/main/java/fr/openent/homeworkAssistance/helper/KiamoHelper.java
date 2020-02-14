@@ -1,7 +1,7 @@
 package fr.openent.homeworkAssistance.helper;
 import fr.openent.homeworkAssistance.service.impl.DefaultCallbackService;
-import fr.wseduc.webutils.Either;
-import fr.wseduc.webutils.collections.JsonArray;
+import io.vertx.core.AsyncResult;
+import io.vertx.core.Future;
 import io.vertx.core.Handler;
 import io.vertx.core.Vertx;
 import io.vertx.core.json.JsonObject;
@@ -11,133 +11,89 @@ import io.vertx.core.http.HttpClientOptions;
 import io.vertx.core.http.HttpClientRequest;
 import io.vertx.core.logging.Logger;
 import io.vertx.core.logging.LoggerFactory;
-import io.vertx.core.net.ProxyOptions;
+import org.entcore.common.controller.ControllerHelper;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.concurrent.atomic.AtomicBoolean;
 
-public class KiamoHelper {
+public class KiamoHelper extends ControllerHelper {
 
     protected static final Logger log = LoggerFactory.getLogger(DefaultCallbackService.class);
     private HttpClient httpClient;
     private JsonObject body;
     private String url;
-    private AtomicBoolean responseIsSent;
-    private boolean closeHttpClient;
-//    public static final boolean DEFAULT_KEEP_ALIVE = true;
 
-    public KiamoHelper(Vertx vertx, String url, JsonObject body) {
+    public KiamoHelper(Vertx vertx, JsonObject body) {
         super();
-        log.error("start constructor");
         this.body = body;
-        this.httpClient = createHttpClient(vertx, body);
-        this.url = url;
-        this.responseIsSent = new AtomicBoolean(false);
-        this.closeHttpClient = false;
-        log.error("end constructor");
+        this.url = body.getString("address");
+        setHost(vertx);
     }
 
     /**
      * Create default HttpClient
      * @return new HttpClient
      */
-    public static HttpClient createHttpClient(Vertx vertx, JsonObject config) {
-        log.error("start createHttpClient");
-        boolean setSsl = true;
+    public void setHost(Vertx vertx) {
         try {
-            setSsl = "https".equals(new URI(config.getString("address")).getScheme());
+            URI uri = new URI(this.url);
+            HttpClientOptions opts = new HttpClientOptions()
+                    .setDefaultHost(this.url)
+//                    .setDefaultPort("https".equals(uri.getScheme()) ? 3000 : 80) // ??
+                    .setSsl("https".equals(uri.getScheme()))
+                    .setKeepAlive(true)
+                    .setVerifyHost(false)
+                    .setTrustAll(true);
+            this.httpClient = vertx.createHttpClient(opts);
         } catch (URISyntaxException e) {
-            log.error("Invalid uri",e);
+            e.printStackTrace();
         }
-        final HttpClientOptions options = new HttpClientOptions();
-        options.setSsl(setSsl);
-        options.setTrustAll(true);
-        options.setVerifyHost(false);
-        if (System.getProperty("httpclient.proxyHost") != null) {
-            ProxyOptions proxyOptions = new ProxyOptions()
-                    .setHost(System.getProperty("httpclient.proxyHost"))
-                    .setPort(Integer.parseInt(System.getProperty("httpclient.proxyPort")))
-                    .setUsername(System.getProperty("httpclient.proxyUsername"))
-                    .setPassword(System.getProperty("httpclient.proxyPassword"));
-            options.setProxyOptions(proxyOptions);
-        }
-        int maxPoolSize = config.getInteger("http-client-max-pool-size", 0);
-        if(maxPoolSize > 0) {
-            options.setMaxPoolSize(maxPoolSize);
-        }
-        log.error("end createHttpClient");
-        return vertx.createHttpClient(options);
     }
 
-    public void sendRequest(Handler<Either<String,Buffer>> handler) {
-        log.error("start sendRequest");
-
+    public void sendForm(Handler<AsyncResult<Buffer>> handler) {
         URI uri = null;
         try {
             uri = new URI(this.url);
         } catch (URISyntaxException e) {
-            handler.handle(new Either.Left<>("Bad request"));
-            return;
+            e.printStackTrace();
         }
 
-        final HttpClientRequest httpClientRequest = httpClient.postAbs(uri.toString(), response -> {
-            if (response.statusCode() == 200) {
+        Future<Buffer> future = Future.future();
+        future.setHandler(handler);
+
+        HttpClientRequest request = httpClient.postAbs(uri.toString(), response -> {
+            if (response.statusCode() == 201) {
                 final Buffer buff = Buffer.buffer();
-                response.handler(event -> buff.appendBuffer(event));
-                response.endHandler(end -> {
-                    handler.handle(new Either.Right<>(buff));
-                    if (KiamoHelper.this.closeHttpClient) {
-                        if (!this.responseIsSent.getAndSet(true)) {
-                            httpClient.close();
-                        }
-                    }
+                response.bodyHandler(buff::appendBuffer);
+                response.handler(event -> {
+                    buff.appendBuffer(event);
+                    httpClient.close();
                 });
+                response.endHandler(end -> handler.handle(Future.succeededFuture(buff)));
             } else {
-                log.error("fail to post webservice" + response.statusMessage());
-                response.bodyHandler(event -> {
-                    log.error("Returning body after POST CALL : " + KiamoHelper.this.url + ", Returning body : " + event.toString("UTF-8"));
-                    if (KiamoHelper.this.closeHttpClient) {
-                        if (!this.responseIsSent.getAndSet(true)) {
-                            httpClient.close();
-                        }
-                    }
-                });
+                log.error("[HomeworkAssistance@Kiamo] Fail to post webservice : " + response.statusMessage());
+                response.bodyHandler(event -> {});
             }
         });
 
+        request.exceptionHandler(event -> {
+            log.error(event.getMessage(), event.getCause());
+        });
+
+        request.putHeader("Kiamo-API-Token", this.body.getString("key"));
+        request.putHeader("Content-type", "application/x-www-form-urlencoded");
+
         if (this.body != null) {
-            JsonObject params = this.body;
-//            params.remove("key");
-//            params.remove("ip_server");
-//            params.remove("address");
-            Object parameters = params.getMap();
-            String encodedParameters = "";
-            if(parameters instanceof JsonObject) {
-                encodedParameters = ((JsonObject) parameters).encode();
-            } else if(parameters instanceof JsonArray) {
-                encodedParameters = ((JsonArray) parameters).encode();
-            } else {
-                log.error("unknow parameters format");
-                handler.handle(new Either.Left<>("unknow parameters format"));
-                return;
-            }
+            request.setChunked(true);
 
-            httpClientRequest.write("parameters=").write(encodedParameters);
+            JsonObject parameters = this.body;
+            // Replace next parameters by config params and delete these ones from model ???
+            parameters.remove("key");
+            parameters.remove("ip_server");
+            parameters.remove("address");
+            String encodedParameters = parameters.encode();
+
+            request.write("parameters=").write(encodedParameters);
         }
-
-        httpClientRequest.putHeader("Kiamo-API-Token", this.body.getString("key"));
-
-        httpClientRequest.exceptionHandler(new Handler<Throwable>() {
-            @Override
-            public void handle(Throwable event) {
-                log.error(event.getMessage(), event);
-                if (!responseIsSent.getAndSet(true)) {
-                    handle(event);
-                    httpClient.close();
-                }
-            }
-        }).end();
-
-        log.error("end sendRequest");
+        request.end();
     }
 }

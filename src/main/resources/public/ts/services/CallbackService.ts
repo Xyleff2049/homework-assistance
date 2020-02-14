@@ -10,8 +10,8 @@ export const callbackService: CallbackService = {
 
     async post(callback : Callback): Promise<AxiosPromise> {
         try {
-            let {data} = await http.post(`/homework-assistance/services/${callback.userdata.service}/callback`, callback);
-            return data;
+            let response = await http.post(`/homework-assistance/services/${callback.userdata.service}/callback`, callback);
+            return response.data.body;
         } catch (err) {
             throw err;
         }
