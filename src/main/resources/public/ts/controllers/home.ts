@@ -67,7 +67,6 @@ export const homeController = ng.controller('HomeController', ['$scope', 'Config
     };
 
     vm.saveConfig = async (): Promise<void> => {
-        vm.config.exclusions.sort((ex1,ex2) => sortExclusion(ex1,ex2));
         let data = await configService.put(vm.config);
         vm.config.mongoToModel(data);
         console.log("saveConfig");
@@ -118,6 +117,7 @@ export const homeController = ng.controller('HomeController', ['$scope', 'Config
         else {
             console.log("One or several of these dates already exist.")
         }
+        vm.config.exclusions.sort((ex1,ex2) => sortExclusion(ex1,ex2));
         await vm.saveConfig();
     };
 
