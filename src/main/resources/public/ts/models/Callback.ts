@@ -26,6 +26,7 @@ export class Callback {
     callback_time: Time;
     userdata: Userdata;
     informations_complementaires: string;
+    // To delete in the future
     key: string;
     ip_server: string;
     address: string;
@@ -36,11 +37,10 @@ export class Callback {
         this.callback_time = new Time();
         this.userdata = new Userdata();
         this.informations_complementaires = null;
+        // To delete in the future
         this.key = "68d27ac06e53fef962c49a4b0d18691019c3a31a";
         this.ip_server = "adresse_kiamo";
         this.address = "http://kiamo:3000";
-        // this.address = "http://" + this.ip_server + "/api/service/" + this.userdata.service + "/tasks?token=" + this.key;
-        // this.address = "http://" + this.ip_server + "/api/serviceS/" + this.userdata.service + "/tasks?token=" + this.key;
     }
 
     toJson(): Object {

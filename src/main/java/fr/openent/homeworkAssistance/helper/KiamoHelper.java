@@ -22,10 +22,16 @@ public class KiamoHelper extends ControllerHelper {
     private JsonObject body;
     private String url;
 
-    public KiamoHelper(Vertx vertx, JsonObject body) {
+    public KiamoHelper(Vertx vertx, JsonObject config, JsonObject body) {
         super();
         this.body = body;
         this.url = body.getString("address");
+//         this.url = "http://" +
+//                     config.getJsonObject("kiamo").getString("server") +
+//                     "/api/service/" +
+//                     body.getJsonObject("userdata").getString("service") +
+//                     "/tasks?token=" +
+//                     config.getJsonObject("kiamo").getString("key");
         setHost(vertx);
     }
 
@@ -86,7 +92,7 @@ public class KiamoHelper extends ControllerHelper {
             request.setChunked(true);
 
             JsonObject parameters = this.body;
-            // Replace next parameters by config params and delete these ones from model ???
+            // Delete these ones from model when config will be update
             parameters.remove("key");
             parameters.remove("ip_server");
             parameters.remove("address");

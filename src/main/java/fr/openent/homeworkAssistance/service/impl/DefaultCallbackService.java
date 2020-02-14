@@ -10,15 +10,17 @@ import io.vertx.core.logging.LoggerFactory;
 
 public class DefaultCallbackService implements CallbackService {
     private Vertx vertx;
+    private JsonObject config;
 
-    public DefaultCallbackService(Vertx vertx) {
+    public DefaultCallbackService(Vertx vertx, JsonObject config) {
         this.vertx = vertx;
+        this.config = config;
     }
 
     @Override
     public void send(JsonObject form, Handler<Either<String, JsonObject>> handler) {
         final Logger log = LoggerFactory.getLogger(DefaultCallbackService.class);
-        KiamoHelper kiamoHelper = new KiamoHelper(vertx, form);
+        KiamoHelper kiamoHelper = new KiamoHelper(vertx, config, form);
         kiamoHelper.sendForm(event -> {
             if (event.succeeded()) {
                 log.info("[HomeworkAssistance@Kiamo] Form sent to Kiamo");

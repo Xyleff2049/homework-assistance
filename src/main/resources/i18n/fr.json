@@ -11,6 +11,7 @@
   "student.rdv.connector": "h",
   "student.otherInformations" : "Informations complémentaires",
   "student.validate": "Envoyer ma demande",
+  "student.send": "Formulaire envoyé",
 
   "admin.title": "Paramétrage du service Aide aux devoirs",
   "admin.period.title": "Période(s) de fermeture",
@@ -35,5 +36,6 @@
 
   "admin.validate": "Valider",
   "admin.cancel": "Annuler",
-  "admin.close": "Fermer"
+  "admin.close": "Fermer",
+  "admin.save": "Modification enregistrée"
 }

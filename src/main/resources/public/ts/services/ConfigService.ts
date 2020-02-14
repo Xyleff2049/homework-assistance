@@ -1,27 +1,25 @@
 import {ng} from 'entcore';
-import http, {AxiosPromise} from 'axios';
+import http, {AxiosResponse} from 'axios';
 import {Config} from '../models/Config';
 
 export interface ConfigService {
-    get(): Promise<AxiosPromise>;
-    put(config: Config) : Promise<AxiosPromise>;
+    get(): Promise<AxiosResponse>;
+    put(config: Config) : Promise<AxiosResponse>;
 }
 
 export const configService: ConfigService = {
 
-    async get(): Promise<AxiosPromise> {
+    async get(): Promise<AxiosResponse> {
         try {
-            let {data} = await http.get('/homework-assistance/config');
-            return data;
+            return await http.get('/homework-assistance/config');
         } catch (err) {
             throw err;
         }
     },
 
-    async put(config: Config) : Promise<AxiosPromise> {
+    async put(config: Config) : Promise<AxiosResponse> {
         try {
-            let {data} = await http.put('/homework-assistance/config', config.toJson());
-            return data;
+            return await http.put('/homework-assistance/config', config.toJson());
         } catch (err) {
             throw err;
         }

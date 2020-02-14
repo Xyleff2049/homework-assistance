@@ -1,4 +1,4 @@
-import {idiom, model, ng, template} from 'entcore';
+import {idiom, model, ng, template, toasts} from 'entcore';
 import {Callback, services} from '../models/Callback';
 import {Config, Exclusion} from '../models/Config';
 import {DateUtils} from '../utils/date';
@@ -6,7 +6,7 @@ import {callbackService, configService} from '../services';
 
 interface ViewModel {
     callback: Callback;
-    error: boolean;
+    error: string;
     config: Config;
     lightbox: {
         delete: boolean,
@@ -38,7 +38,7 @@ export const homeController = ng.controller('HomeController', ['$scope', 'Config
     const vm: ViewModel = this;
 
     vm.callback = new Callback();
-    vm.error = true; // true for time error, false for date error
+    vm.error = "";
 
     vm.config = new Config();
     vm.message = "";
@@ -57,8 +57,13 @@ export const homeController = ng.controller('HomeController', ['$scope', 'Config
         let dateValid = checkDate();
         let timeValid = checkTime();
         if (dateValid && timeValid) {
-            let data = await callbackService.post(vm.callback);
-            printDataCallback(data);
+            let response = await callbackService.post(vm.callback);
+            if (response.status == 200 || response.status == 201) {
+                printDataCallback(response.data.body);
+                toasts.confirm(idiom.translate('student.send'));
+            } else {
+                toasts.warning(response.data.toString());
+            }
         }
         else {
             vm.showLightbox('error');
@@ -67,10 +72,15 @@ export const homeController = ng.controller('HomeController', ['$scope', 'Config
     };
 
     vm.saveConfig = async (): Promise<void> => {
-        let data = await configService.put(vm.config);
-        vm.config.mongoToModel(data);
-        console.log("saveConfig");
-        console.log(vm.config);
+        let response = await configService.put(vm.config);
+        if (response.status == 200 || response.status == 201) {
+            toasts.confirm(idiom.translate('admin.save'));
+            vm.config.mongoToModel(response.data);
+        } else {
+            toasts.warning(response.data.toString());
+        }
+        // console.log("saveConfig");
+        // console.log(vm.config);
         $scope.safeApply();
     };
 
@@ -115,9 +125,11 @@ export const homeController = ng.controller('HomeController', ['$scope', 'Config
             vm.config.exclusions.push(vm.exclusion);
         }
         else {
-            console.log("One or several of these dates already exist.")
+            vm.error = 'adminDate';
+            vm.showLightbox('error');
+            console.log("[ERROR] One or several of these dates already exist.")
         }
-        vm.config.exclusions.sort((ex1,ex2) => sortExclusion(ex1,ex2));
+        vm.config.exclusions = vm.config.exclusions.sort((ex1, ex2) => sortExclusion(ex1,ex2));
         await vm.saveConfig();
     };
 
@@ -183,37 +195,60 @@ export const homeController = ng.controller('HomeController', ['$scope', 'Config
 
 
     const loadConfig = async (): Promise<void> => {
-        let data = await configService.get();
-        vm.config.mongoToModel(data);
-        console.log("loadConfig");
-        console.log(vm.config);
+        let response = await configService.get();
+        if (response.status == 200 || response.status == 201) {
+            vm.config.mongoToModel(response.data);
+        }
+        // console.log("loadConfig");
+        // console.log(vm.config);
         $scope.safeApply();
     };
+
+    const loadCallback = async () => {
+            vm.callback.userdata.prenom = model.me.firstName;
+            vm.callback.userdata.nom = model.me.lastName;
+            vm.callback.userdata.etablissement = model.me.structureNames[0];
+            vm.callback.userdata.classe = await vm.getClassName();
+            vm.callback.userdata.service = "76"; // Set Français as default selected option
+            vm.callback.userdata.matiere = services[vm.callback.userdata.service];
+            vm.callback.callback_date = new Date();
+            vm.callback.callback_time.hour = vm.config.times.start.hour;
+            vm.callback.callback_time.minute = vm.config.times.start.minute;
+            // console.log("loadCallback");
+            // console.log(vm.callback);
+            $scope.safeApply();
+        };
 
     const checkExclusion = (): boolean => {
         let safe = true;
         vm.config.exclusions.forEach(exclusion => {
-            if (exclusion.start === vm.exclusion.start || exclusion.end === vm.exclusion.end) {
+            if (vm.exclusion.start >= vm.exclusion.end ||
+                exclusion.start === vm.exclusion.start ||
+                exclusion.end === vm.exclusion.end ||
+                vm.exclusion.start > exclusion.start && vm.exclusion.end < exclusion.end) {
                 safe = false;
             }
         });
         return safe;
     };
 
-    const loadCallback = async () => {
-        vm.callback.userdata.prenom = model.me.firstName;
-        vm.callback.userdata.nom = model.me.lastName;
-        vm.callback.userdata.etablissement = model.me.structureNames[0];
-        vm.callback.userdata.classe = await vm.getClassName();
-        vm.callback.userdata.service = "76"; // Set Français as default selected option
-        vm.callback.userdata.matiere = services[vm.callback.userdata.service];
-        vm.callback.callback_date = new Date();
-        vm.callback.callback_time.hour = vm.config.times.start.hour;
-        vm.callback.callback_time.minute = vm.config.times.start.minute;
-        console.log("loadCallback");
-        console.log(vm.callback);
-        $scope.safeApply();
-    };
+    const sortExclusion = (ex1:Exclusion, ex2:Exclusion): number => {
+            let startValues1 = ex1.start.split("/");
+            let startValues2 = ex2.start.split("/");
+
+            let date1 = new Date(parseInt(startValues1[2]), parseInt(startValues1[1])-1, parseInt(startValues1[0]));
+            let date2 = new Date(parseInt(startValues2[2]), parseInt(startValues2[1])-1, parseInt(startValues2[0])+1);
+
+            if (date1 > date2) {
+                return 1;
+            }
+            else if (date1 < date2) {
+                return -1;
+            }
+            else {
+                return 0;
+            }
+        };
 
     const checkDate = (): boolean => {
         let check = true;
@@ -224,9 +259,9 @@ export const homeController = ng.controller('HomeController', ['$scope', 'Config
             let startDate = new Date(parseInt(startValues[2]), parseInt(startValues[1])-1, parseInt(startValues[0]));
             let endDate = new Date(parseInt(endValues[2]), parseInt(endValues[1])-1, parseInt(endValues[0])+1);
 
+            // Check is the selected date is available (not in closed period)
             if (startDate <= vm.callback.callback_date && vm.callback.callback_date < endDate) {
-                console.log("Date is wrong");
-                vm.error = false;
+                vm.error = 'studentDate';
                 vm.exclusion = ex;
                 check = false;
             }
@@ -238,19 +273,19 @@ export const homeController = ng.controller('HomeController', ['$scope', 'Config
         if (vm.callback.callback_time.hour < vm.config.times.start.hour ||
             vm.callback.callback_time.hour > vm.config.times.end.hour) {
             console.log("Time is wrong");
-            vm.error = true;
+            vm.error = 'studentTime';
             return false;
         }
         else if (vm.callback.callback_time.hour === vm.config.times.start.hour &&
             vm.callback.callback_time.minute < vm.config.times.start.minute) {
             console.log("Time is wrong");
-            vm.error = true;
+            vm.error = 'studentTime';
             return false;
         }
         else if (vm.callback.callback_time.hour === vm.config.times.end.hour &&
             vm.callback.callback_time.minute > vm.config.times.end.minute) {
             console.log("Time is wrong");
-            vm.error = true;
+            vm.error = 'studentTime';
             return false;
         }
         else {
@@ -286,41 +321,6 @@ export const homeController = ng.controller('HomeController', ['$scope', 'Config
         console.log(JSON.parse(data.parameters.toString()));
     };
 
-    const sortExclusion = (ex1:Exclusion, ex2:Exclusion): number => {
-        let startValues1 = ex1.start.split("/");
-        let startValues2 = ex2.start.split("/");
-
-        let intValues1 = [parseInt(startValues1[0]), parseInt(startValues1[1])-1, parseInt(startValues1[2])];
-        let intValues2 = [parseInt(startValues2[0]), parseInt(startValues2[1])-1, parseInt(startValues2[2])];
-
-        // Compare years
-        if (intValues1[2] > intValues2[2]) {
-            return -1;
-        }
-        else if (intValues1[2] < intValues2[2]) {
-            return 1;
-        }
-        else { // Compare months if same years
-            if (intValues1[1] > intValues2[1]) {
-                return -1;
-            }
-            else if (intValues1[1] < intValues2[1]) {
-                return 1;
-            }
-            else { // Compare days if same months
-                if (intValues1[0] > intValues2[0]) {
-                    return -1;
-                }
-                else if (intValues1[0] < intValues2[0]) {
-                    return 1;
-                }
-                else {
-                    console.log("Two periods must not start or end the same day (cf 'checkExclusion' function in home.ts file).");
-                    return 0;
-                }
-            }
-        }
-    };
 
     const init = async (): Promise<void> => {
         await loadConfig();

@@ -1,11 +1,15 @@
 <lightbox show="vm.lightbox.error" on-close="vm.hideLightbox('error')">
-    <div ng-if="vm.error" class="flex">
+    <div ng-if="vm.error == 'studentTime'" class="flex">
         Le service n'est disponible qu'entre [[vm.config.times.start.hour]]h[[vm.config.times.start.minute]]
         et [[vm.config.times.end.hour]]h[[vm.config.times.end.minute]]. Veuillez essayer un autre moment.
         <input type="button" class="inline" ng-click="vm.hideLightbox('error')" i18n-value="admin.close" />
     </div>
-    <div ng-if="!vm.error" class="flex">
+    <div ng-if="vm.error == 'studentDate'" class="flex">
         La période du [[vm.exclusion.start]] au [[vm.exclusion.end]] est indisponible . Veuillez essayer une autre date.
+        <input type="button" class="inline" ng-click="vm.hideLightbox('error')" i18n-value="admin.close" />
+    </div>
+    <div ng-if="vm.error == 'adminDate'" class="flex">
+        Ces dates correspondent déjà à une autre période de fermeture. Veuillez essayer d'autres dates.
         <input type="button" class="inline" ng-click="vm.hideLightbox('error')" i18n-value="admin.close" />
     </div>
 </lightbox>
