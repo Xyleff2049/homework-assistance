@@ -24,7 +24,7 @@
   "admin.availabilityHours.title": "Plages horraires disponibles",
   "admin.availabilityHours.from": "De :",
   "admin.availabilityHours.connector": "h",
-  "admin.availabilityHours.to": "A :",
+  "admin.availabilityHours.to": "A  :",
 
   "admin.monday": "L",
   "admin.tuesday": "M",

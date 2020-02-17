@@ -1,16 +1,17 @@
 <div class="important-txt"><i18n>admin.period.title</i18n></div>
-<div id="periods">
+<div class="periods">
     <table>
         <tbody>
         <tr ng-repeat="exclusion in vm.config.exclusions track by $index">
-            <td style="width:400px">
-                <i18n>admin.period.from</i18n>[[exclusion.start]]<i18n>admin.period.to</i18n>[[exclusion.end]]
+            <td class="size-column-1">
+                <i18n>admin.period.from</i18n>[[exclusion.start]]<br/>
+                <i18n>admin.period.to</i18n>[[exclusion.end]]
             </td>
-            <td style="width:200px">
+            <td class="size-column-2">
                 <button type="button" class="classic-button" ng-click="vm.showLightbox('delete', $index)">
                     <i class="suppr md-icon"></i>
                 </button>
-                <i18n>admin.delete</i18n>
+                <i18n class="flex">admin.delete</i18n>
             </td>
         </tr>
         </tbody>
