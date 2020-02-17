@@ -1,0 +1,35 @@
+.periods {
+  margin-bottom: 0px !important;
+  min-height: 100px;
+  height: 100px; /*pour IE qui comprend rien, et qui ne reconnait pas min-height, mais qui comprend mal height*/
+  min-width: 300px;
+  width: 100%; /*pour IE qui comprend rien*/
+  overflow-y: scroll; /*pour activer les scrollbarres*/
+
+  .size-column-1 {
+    width: 400px;
+    @media screen and (min-width: 600px) and (max-width: 800px) {
+      br { display: none }
+    }
+    @media screen and (min-width: 1200px) {
+      br { display: none }
+    }
+  }
+
+  .size-column-2 {
+    width: 200px;
+  }
+
+  tr {
+    border: 0px transparent;
+  }
+
+  tr td:first-child {
+    font-size: 18px;
+  }
+
+  th, td {
+    padding: 5px;
+    text-align: left;
+  }
+}

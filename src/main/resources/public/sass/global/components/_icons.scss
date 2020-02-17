@@ -1,0 +1,123 @@
+i {
+  &.icon-spacing {
+    padding-right: 15px;
+    padding-left: 15px;
+  }
+
+  &.xs-icon {
+    font-size: 10px;
+  }
+
+  &.sm-icon {
+    font-size: 16px;
+  }
+
+  &.md-icon {
+    font-size: 20px;
+  }
+
+  &.lg-icon {
+    font-size: 24px;
+  }
+
+  &.hg-icon {
+    font-size: 40px;
+  }
+
+  &.dot-circled {
+    margin: 3%;
+  }
+
+  &.dot-circled::before {
+    @include fonticon();
+    content: '\e845';
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    background-image: none;
+    color: darkorange;
+    vertical-align: middle;
+  }
+
+  &.calendar-o::before {
+    @include fonticon();
+    content: '\e917';
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    background-image: none;
+    color: darkorange;
+    vertical-align: middle;
+  }
+
+  &.clock::before {
+    @include fonticon();
+    content: '\f017';
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    background-image: none;
+    color: darkorange;
+    vertical-align: middle;
+  }
+
+  &.info-circled-1::before {
+    @include fonticon();
+    content: '\e8d3';
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    background-image: none;
+    color: darkorange;
+    vertical-align: middle;
+  }
+
+  &.cahier-de-textes::before {
+    @include fonticon();
+    content: '\e910';
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    background-image: none;
+    color: darkorange;
+    vertical-align: middle;
+  }
+
+  &.modif::before {
+    @include fonticon();
+    content: '\e858';
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    background-image: none;
+    margin-right: 5px;
+    color: dimgrey;
+    vertical-align: middle;
+  }
+
+  &.suppr::before {
+    @include fonticon();
+    content: '\e8cf';
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    background-image: none;
+    margin-right: 5px;
+    color: dimgrey;
+    vertical-align: middle;
+  }
+
+  &.plus::before {
+    @include fonticon();
+    content: '\e85e';
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    background-image: none;
+    color: white;
+    vertical-align: middle;
+  }
+
+  &.phone::before {
+    @include fonticon();
+    content: '\f095';
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    background-image: none;
+    margin-right: 5px;
+    color: dimgrey;
+    vertical-align: middle;
+  }
+}
