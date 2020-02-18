@@ -25,13 +25,10 @@ public class KiamoHelper extends ControllerHelper {
     public KiamoHelper(Vertx vertx, JsonObject config, JsonObject body) {
         super();
         this.body = body;
-        this.url = body.getString("address");
-//         this.url = "http://" +
-//                     config.getJsonObject("kiamo").getString("server") +
-//                     "/api/service/" +
-//                     body.getJsonObject("userdata").getString("service") +
-//                     "/tasks?token=" +
-//                     config.getJsonObject("kiamo").getString("key");
+        this.url = config.getJsonObject("kiamo").getString("server") +
+                    body.getJsonObject("userdata").getString("service") +
+                    "/tasks?token=" +
+                    config.getJsonObject("kiamo").getString("key");
         setHost(vertx);
     }
 
@@ -44,14 +41,14 @@ public class KiamoHelper extends ControllerHelper {
             URI uri = new URI(this.url);
             HttpClientOptions opts = new HttpClientOptions()
                     .setDefaultHost(this.url)
-//                    .setDefaultPort("https".equals(uri.getScheme()) ? 3000 : 80) // ??
+                    .setDefaultPort("https".equals(uri.getScheme()) ? 443 : 80)
                     .setSsl("https".equals(uri.getScheme()))
                     .setKeepAlive(true)
                     .setVerifyHost(false)
                     .setTrustAll(true);
             this.httpClient = vertx.createHttpClient(opts);
         } catch (URISyntaxException e) {
-            e.printStackTrace();
+            log.error("[HomeworkAssistance@Kiamo] Wrong URI : " + this.url, e);
         }
     }
 
@@ -92,10 +89,6 @@ public class KiamoHelper extends ControllerHelper {
             request.setChunked(true);
 
             JsonObject parameters = this.body;
-            // Delete these ones from model when config will be update
-            parameters.remove("key");
-            parameters.remove("ip_server");
-            parameters.remove("address");
             String encodedParameters = parameters.encode();
 
             request.write("parameters=").write(encodedParameters);

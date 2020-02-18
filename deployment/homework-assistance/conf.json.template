@@ -15,9 +15,8 @@
         "mode" : "${mode}",
         "entcore.port" : 8009,
         "kiamo": {
-          "key": "",
-          "server": ""
-        },
-        "address_kiamo": "${address_kiamo}"
+          "key": "${kiamo_key}",
+          "server": "${kiamo_server}"
+        }
       }
     }
