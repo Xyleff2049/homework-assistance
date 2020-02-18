@@ -23,12 +23,6 @@
         flex-direction: column-reverse;
       }
     }
-
-    .flex {
-      @media screen and (max-width: 800px) {
-        align-items: flex-start;
-      }
-    }
   }
 
   section:after {

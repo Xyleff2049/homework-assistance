@@ -14,10 +14,16 @@
     @media screen and (min-width: 1200px) {
       br { display: none }
     }
+    @media screen and (max-width: 400px) {
+      width: 150px;
+    }
   }
 
   .size-column-2 {
     width: 200px;
+    @media screen and (max-width: 400px) {
+      width: auto;
+    }
   }
 
   tr {
@@ -31,5 +37,11 @@
   th, td {
     padding: 5px;
     text-align: left;
+  }
+
+  .delete-text {
+    @media screen and (max-width: 400px) {
+      display: none;
+    }
   }
 }

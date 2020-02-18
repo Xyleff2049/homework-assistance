@@ -3,6 +3,7 @@ body.homework-assistance {
   @import "generic/index";
   @import "components/home-column";
   @import "components/icons";
+  @import "components/lightbox";
   @import "components/admin/index";
   @import "components/student/index";
 
@@ -109,6 +110,9 @@ body.homework-assistance {
 
   .multilines {
     white-space: pre-line;
+    @media screen and (max-width: 800px) {
+      text-align: center;
+    }
   }
 
   .newMessage {
