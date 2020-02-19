@@ -270,27 +270,16 @@ export const homeController = ng.controller('HomeController', ['$scope', 'Config
     };
 
     const checkTime = (): boolean => {
-        if (vm.callback.callback_time.hour < vm.config.times.start.hour ||
-            vm.callback.callback_time.hour > vm.config.times.end.hour) {
-            console.log("Time is wrong");
+        /* if   (hour out of bounds) ||
+                (hour = startHour but minute is before start) ||
+                (hour = edHour but minute is after end) */
+        if ((vm.callback.callback_time.hour < vm.config.times.start.hour || vm.callback.callback_time.hour > vm.config.times.end.hour) ||
+            (vm.callback.callback_time.hour === vm.config.times.start.hour && vm.callback.callback_time.minute < vm.config.times.start.minute) ||
+            (vm.callback.callback_time.hour === vm.config.times.end.hour && vm.callback.callback_time.minute > vm.config.times.end.minute)) {
             vm.error = 'studentTime';
             return false;
         }
-        else if (vm.callback.callback_time.hour === vm.config.times.start.hour &&
-            vm.callback.callback_time.minute < vm.config.times.start.minute) {
-            console.log("Time is wrong");
-            vm.error = 'studentTime';
-            return false;
-        }
-        else if (vm.callback.callback_time.hour === vm.config.times.end.hour &&
-            vm.callback.callback_time.minute > vm.config.times.end.minute) {
-            console.log("Time is wrong");
-            vm.error = 'studentTime';
-            return false;
-        }
-        else {
-            return true;
-        }
+        return true;
     };
 
     const setModifierParams = (name:string): void => {

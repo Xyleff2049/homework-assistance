@@ -21,15 +21,25 @@ public class KiamoHelper extends ControllerHelper {
     private HttpClient httpClient;
     private JsonObject body;
     private String url;
+    private JsonObject config;
+
 
     public KiamoHelper(Vertx vertx, JsonObject config, JsonObject body) {
         super();
         this.body = body;
-        this.url = config.getJsonObject("kiamo").getString("server") +
-                    body.getJsonObject("userdata").getString("service") +
-                    "/tasks?token=" +
-                    config.getJsonObject("kiamo").getString("key");
+        this.config = config;
+        generateUrl();
         setHost(vertx);
+    }
+
+    private void generateUrl() {
+        if (this.config.getJsonObject("kiamo") != null) {
+            String address = this.config.getJsonObject("kiamo").getString("server");
+            String service = this.body.getJsonObject("userdata").getString("service");
+            String key = this.config.getJsonObject("kiamo").getString("key");
+
+            this.url = address + service + "/tasks?token=" + key;
+        }
     }
 
     /**
@@ -82,7 +92,7 @@ public class KiamoHelper extends ControllerHelper {
             log.error(event.getMessage(), event.getCause());
         });
 
-        request.putHeader("Kiamo-API-Token", this.body.getString("key"));
+        request.putHeader("Kiamo-API-Token", this.config.getJsonObject("kiamo").getString("key"));
         request.putHeader("Content-type", "application/x-www-form-urlencoded");
 
         if (this.body != null) {
