@@ -1,6 +1,5 @@
-# À propos de l'application Forum
-
-* Licence : ??
+# À propos de l'application Homework-assistance
+* Licence : [AGPL v3](http://www.gnu.org/licenses/agpl.txt)
 * Développeur(s) : CGI
 * Financeur(s) : Région Nouvelle Aquitaine
 * Description : Application d'envoi de demandes d'aide aux devoirs
@@ -10,7 +9,7 @@
 
 Dans le fichier 'ent-core.json.template' du projet ong :
 
-Déclarer l'application forum dans `"external-modules"` :
+Déclarer l'application homework-assistance dans `"external-modules"` :
 <pre>
 	{
 	  "name": "fr.openent~homework-assistance~0.1-SNAPSHOT",
