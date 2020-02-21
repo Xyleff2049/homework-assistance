@@ -73,67 +73,67 @@ Un document de cette colection représente la configuration définie par les adm
 Exemple de document de la collection "" :
 <pre>
 	{
-		"_id" : ObjectId("5e25b1b6107ab5b376bc99ba"),
-		"messages" : {
-			"header" : "Tu rencontre des difficultés dans une matière ?\nTu souhaites obtenir un soutien scolaire personnalisé ?",
-			"body" : "Profite d'un service gratuit d'aide aux devoirs par téléphone. L'équipe te recontactera le jour et l'heure souhaités.",
-			"days" : "Du lundi au jeudi",
-			"time" : "De 18h à 21h",
-			"info" : "Hors vacances scolaires"
-		},
-		"settings" : {
-			"exclusions" : [ 
-				{
-					"start" : "03/02/2020",
-					"end" : "04/02/2020"
-				}, 
-				{
-					"start" : "06/02/2020",
-					"end" : "10/02/2020"
-				}
-			],
-			"opening_days" : {
-				"monday" : true,
-				"tuesday" : true,
-				"wednesday" : true,
-				"thursday" : true,
-				"friday" : true,
-				"saturday" : false,
-				"sunday" : false
+	  "_id" : ObjectId("5e25b1b6107ab5b376bc99ba"),
+	  "messages" : {
+		"header" : "Tu rencontre des difficultés dans une matière ?\nTu souhaites obtenir un soutien scolaire personnalisé ?",
+		"body" : "Profite d'un service gratuit d'aide aux devoirs par téléphone. L'équipe te recontactera le jour et l'heure souhaités.",
+		"days" : "Du lundi au jeudi",
+		"time" : "De 18h à 21h",
+		"info" : "Hors vacances scolaires"
+	  },
+	  "settings" : {
+	    "exclusions" : [
+		  {
+			"start" : "03/02/2020",
+			"end" : "04/02/2020"
+		  }, 
+		  {
+			"start" : "06/02/2020",
+			"end" : "10/02/2020"
+		  }
+		  ],
+		  "opening_days" : {
+			"monday" : true,
+			"tuesday" : true,
+			"wednesday" : true,
+			"thursday" : true,
+			"friday" : true,
+			"saturday" : false,
+			"sunday" : false
+		  },
+		  "opening_time" : {
+			"start" : {
+			  "hour" : "18",
+			  "minute" : "0"
 			},
-			"opening_time" : {
-				"start" : {
-					"hour" : "18",
-					"minute" : "0"
-				},
-				"end" : {
-					"hour" : "21",
-					"minute" : "0"
-				}
+			"end" : {
+			  "hour" : "21",
+			"  minute" : "0"
 			}
-		}
+		  }
+	  }
 	}
 </pre>
 
 Description des champs d'un document de la collection "forum.categories" :
 <pre>
 	{
-		"_id" : ObjectId("5e25b1b6107ab5b376bc99ba"),
-		"messages" : {
-			"header" : "Message d'en-tête",
-			"body" : "Message central",
-			"days" : "Message jours d'ouvertures",
-			"time" : "Message heures d'ouvertures",
-			"info" : "Message d'informations complémentaires"
-		},
-		"settings" : {
-			"exclusions" : "Liste des périodes de fermeture du service",
-			"opening_days" : "Jours d'ouvertures du services",
-			"opening_time" : {
-				"start" : "Heure de début d'ouverture du service",
-				"end" : "Heure de fin d'ouverture du service"
-			}
+	  "_id" : ObjectId("5e25b1b6107ab5b376bc99ba"),
+	  "messages" : {
+		"header" : "Message d'en-tête",
+		"body" : "Message central",
+		"days" : "Message jours d'ouvertures",
+		"time" : "Message heures d'ouvertures",
+		"info" : "Message d'informations complémentaires"
+	  },
+	  "settings" : {
+		"exclusions" : "Liste des périodes de fermeture du service",
+		"opening_days" : "Jours d'ouvertures du services",
+		"opening_time" : {
+		  "start" : "Heure de début d'ouverture du service",
+		  "end" : "Heure de fin d'ouverture du service"
 		}
+	  }
 	}
 </pre>
 
