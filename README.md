@@ -139,5 +139,5 @@ Description des champs d'un document de la collection "forum.categories" :
 
 # Gestion des droits
 On en distingue 2 :
-	* Admin : possibilité de changer les paramètres de la configuration
-	* Student : possibilité d'envoyer un formulaire de demande d'aide aux devoirs au service
+ - Admin : possibilité de changer les paramètres de la configuration
+ - Student : possibilité d'envoyer un formulaire de demande d'aide aux devoirs au service
