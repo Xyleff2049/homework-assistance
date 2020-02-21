@@ -6,7 +6,7 @@
     "app-name" : "Homework-assistance",
     "path-prefix" : "homework-assistance",
     "app-address" : "/homework-assistance",
-    "app-icon" : "${host}/public/img/logo.svg",
+    "app-icon" : "${host}/homework-assistance/public/img/logo.svg",
     "host": "${host}",
     "ssl" : $ssl,
     "auto-redeploy": false,
