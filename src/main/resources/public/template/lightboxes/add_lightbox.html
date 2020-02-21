@@ -1,16 +1,33 @@
 <lightbox show="vm.lightbox.add" on-close="vm.hideLightbox('add')" class="lightbox">
     <form ng-submit="vm.addExclusion()">
-        <div class="flex-lightbox">
-            <div>
+        <h2 class="flex">Ajout d'une période de fermeture</h2>
+        <div class="flex-lightbox-add">
+            <p>
                 <div class="dateSized">
                     <label class="labelSized">Date de début :</label>
-                    <input id="startDate" type="date" name="startDate" class="newDate" ng-model="vm.exclusion.start" required>
+                    <span class="date-picker">
+                         <date-picker ng-id="startDate"
+                                      name="startDate"
+                                      class="newDate"
+                                      ng-model="vm.exclusion.start"
+                                      required>
+                        </date-picker>
+<!--                    <input ng-id="startDate" type="date" name="startDate" class="newDate" ng-model="vm.exclusion.start" min=[[vm.getTodayDate()]] required>-->
+                    </span>
                 </div>
                 <div class="dateSized">
                     <label class="labelSized">Date de fin :</label>
-                    <input id="endDate" type="date" name="endDate" class="newDate" ng-model="vm.exclusion.end" required>
+                    <span class="date-picker">
+                         <date-picker ng-id="endDate"
+                                      name="endDate"
+                                      class="newDate"
+                                      ng-model="vm.exclusion.end"
+                                      required>
+                        </date-picker>
+<!--                        <input id="endDate" type="date" name="endDate" class="newDate" ng-model="vm.exclusion.end" min=[[vm.getTodayDate()]] required>-->
+                    </span>
                 </div>
-            </div>
+            </p>
             <div>
                 <input type="submit" class="button" ng-click="vm.hideLightbox('add')" i18n-value="admin.validate" />
                 <input type="button" ng-click="vm.hideLightbox('add')" i18n-value="admin.cancel" />

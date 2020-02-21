@@ -1,10 +1,12 @@
+$homeworkassistance-main: #ffb600;
+$homeworkassistance-white: #ffffff;
+$homeworkassistance-black: rgba(0, 0, 0, .87);
+$homeworkassistance-grey: #d6d6d6;
+
 body.homework-assistance {
 
+  @import "components/index";
   @import "generic/index";
-  @import "components/home-column";
-  @import "components/icons";
-  @import "components/lightbox";
-  @import "components/admin/index";
 
   .title-row {
     @media screen and (max-width: 800px) {
@@ -21,48 +23,55 @@ body.homework-assistance {
     }
   }
 
-  article {
-    width: 100%;
-    padding-right: 30px !important;
-    padding-left: 30px !important;
-    margin: 0;
-  }
-
-  .column {
-    float: left;
-    width: auto;
-    padding-left: 2%;
-    padding-right: 2%;
-  }
-
   .block-line {
-    margin-bottom: 5%;
+    margin-bottom: 3%;
+
+    @media screen and (max-width: 500px) {
+      margin: 0;
+    }
   }
 
   .block-line > p {
-    margin-bottom: 2%;
+    margin-bottom: 1%;
   }
 
   .important-txt {
     font-size: 18px;
     color: black;
+
+    @media screen and (max-width: 500px) {
+      font-size: 14px;
+    }
   }
 
   .important-title {
     font-size: 18px;
     font-weight: bold;
     margin-bottom: 5%;
+
+    @media screen and (max-width: 500px) {
+      font-size: 14px;
+    }
   }
 
   #offer {
     text-align: center;
     padding-right: 15%;
     padding-left: 15%;
+
+    @media screen and (max-width: 500px) {
+      padding-right: 5%;
+      padding-left: 5%;
+    }
   }
 
   #availabilityTitle {
     font-size: 18px;
     color: black;
+
+    @media screen and (max-width: 500px) {
+      font-size: 14px;
+    }
   }
 
   .inline {
@@ -88,6 +97,10 @@ body.homework-assistance {
   #add-period {
     color: darkorange;
     height: 50px;
+
+    @media screen and (max-width: 500px) {
+      height: 30px;
+    }
   }
 
   button {
@@ -109,6 +122,7 @@ body.homework-assistance {
 
   .multilines {
     white-space: pre-line;
+
     @media screen and (max-width: 800px) {
       text-align: center;
     }
@@ -119,12 +133,22 @@ body.homework-assistance {
     margin: 0 2% 0 2%;
   }
 
-  .newDate {
-    margin: 0 10% 0 5%;
-    float: right;
-  }
-
   .dateSized {
     width : 300px;
+  }
+
+  select {
+    min-width: 50px !important;
+    border: none;
+    border-bottom: solid 1px #aaa;
+
+    option:hover {
+      background-color: $homeworkassistance-main;
+      color: $homeworkassistance-white;
+    }
+  }
+
+  @media screen and (max-width: 500px) {
+    font-size: 12px;
   }
 }

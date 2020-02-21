@@ -27,6 +27,12 @@ interface ViewModel {
     getClassName(): string;
     showLightbox(string, number?): void;
     hideLightbox(string): void;
+    getTodayDate(): string;
+    getTimes(number): string;
+    getHoursOpt(): string[];
+    getMinutesOpt(): string[];
+    // test(string): void;
+    // test2(string): void;
 }
 
 
@@ -123,14 +129,13 @@ export const homeController = ng.controller('HomeController', ['$scope', 'Config
         let safe = checkExclusion();
         if (safe) {
             vm.config.exclusions.push(vm.exclusion);
+            vm.config.exclusions = vm.config.exclusions.sort((ex1, ex2) => sortExclusion(ex1,ex2));
+            await vm.saveConfig();
         }
         else {
-            vm.error = 'adminDate';
             vm.showLightbox('error');
             console.log("[ERROR] One or several of these dates already exist.")
         }
-        vm.config.exclusions = vm.config.exclusions.sort((ex1, ex2) => sortExclusion(ex1,ex2));
-        await vm.saveConfig();
     };
 
     vm.deleteExclusion = async (): Promise<void> => {
@@ -153,7 +158,7 @@ export const homeController = ng.controller('HomeController', ['$scope', 'Config
         }
     };
 
-    vm.showLightbox = (name:string, index?:number): void => {
+    vm.showLightbox = (name: string, index?:number): void => {
         switch(name) {
             case "delete": {
                 vm.index = index;
@@ -173,7 +178,7 @@ export const homeController = ng.controller('HomeController', ['$scope', 'Config
         }
     };
 
-    vm.hideLightbox = (name:string): void => {
+    vm.hideLightbox = (name: string): void => {
         switch(name) {
             case "delete": {
                 vm.lightbox.delete = false; break;
@@ -192,6 +197,109 @@ export const homeController = ng.controller('HomeController', ['$scope', 'Config
             }
         }
     };
+
+    vm.getTodayDate = (): string => {
+        return DateUtils.format(new Date(), DateUtils.FORMAT["YEAR-MONTH-DAY"]);
+    };
+
+    vm.getTimes = (n: number): string  => {
+        if (n.toString().length < 2) {
+            return "0" + n.toString();
+        }
+        return n.toString();
+    };
+
+    vm.getHoursOpt = (): string[] => {
+        let hours = [];
+        for (let i = vm.config.times.start.hour; i <= vm.config.times.end.hour; i++) {
+            if (i === vm.config.times.end.hour && vm.config.times.end.minute === 0) {
+                break;
+            }
+            let stringI = i.toString();
+            if (stringI.length < 2) {
+                hours.push("0" + stringI);
+            }
+            else {
+                hours.push(stringI);
+            }
+        }
+        return hours;
+    };
+
+    vm.getMinutesOpt = (): string[] => {
+        let minutes = [];
+        if (vm.config.times.start.hour === vm.config.times.end.hour) {
+            for (let i = vm.config.times.start.minute; i <= vm.config.times.end.minute; i+=5) {
+                let stringI = i.toString();
+                if (stringI.length < 2) {
+                    minutes.push("0" + stringI);
+                }
+                else {
+                    minutes.push(stringI);
+                }
+            }
+        }
+        else if (vm.config.times.start.hour < vm.config.times.end.hour && vm.config.times.start.minute <= vm.config.times.end.minute) {
+            for (let i = 0; i <= 55; i+=5) {
+                let stringI = i.toString();
+                if (stringI.length < 2) {
+                    minutes.push("0" + stringI);
+                }
+                else {
+                    minutes.push(stringI);
+                }
+            }
+        }
+        else if (vm.config.times.start.hour < vm.config.times.end.hour && vm.config.times.start.minute > vm.config.times.end.minute) {
+            for (let i = vm.config.times.start.minute; i <= 55; i+=5) {
+                let stringI = i.toString();
+                if (stringI.length < 2) {
+                    minutes.push("0" + stringI);
+                }
+                else {
+                    minutes.push(stringI);
+                }
+            }
+            for (let i = 0; i < vm.config.times.end.minute; i+=5) {
+                let stringI = i.toString();
+                if (stringI.length < 2) {
+                    minutes.push("0" + stringI);
+                }
+                else {
+                    minutes.push(stringI);
+                }
+            }
+        }
+        else {
+            console.log("Invalid hours define by the admin");
+        }
+        return minutes;
+    };
+
+    /*
+    vm.test = (id: string): void  => {
+        let original = document.getElementById('id');
+        let replacement = document.createElement('textarea');
+        replacement.setAttribute("id",id);
+        replacement.setAttribute("class","newMessage");
+        replacement.setAttribute("value", vm.message);
+        replacement.setAttribute("ng-model", vm.message);
+        replacement.setAttribute("ng-blur", "vm.test2(" + id + ")");
+        replacement.innerHTML = original.innerHTML;
+        original.parentNode.replaceChild(replacement, original);
+        replacement.focus();
+    };
+    vm.test2 = (id: string): void  => {
+        let original = document.getElementById('id');
+        let replacement = document.createElement('div');
+        replacement.setAttribute("id", id);
+        replacement.setAttribute("class","multilines");
+        replacement.setAttribute("ng-click","vm.test("+ id + ")");
+        replacement.textContent = vm.message;
+        original.innerHTML = original.innerHTML;
+        original.parentNode.replaceChild(replacement, original);
+    };
+    */
 
 
     const loadConfig = async (): Promise<void> => {
@@ -222,10 +330,15 @@ export const homeController = ng.controller('HomeController', ['$scope', 'Config
     const checkExclusion = (): boolean => {
         let safe = true;
         vm.config.exclusions.forEach(exclusion => {
-            if (vm.exclusion.start >= vm.exclusion.end ||
+            if (vm.exclusion.start >= vm.exclusion.end) {
+                vm.error = 'adminReverseDate';
+                safe = false;
+            }
+            else if (
                 exclusion.start === vm.exclusion.start ||
                 exclusion.end === vm.exclusion.end ||
                 vm.exclusion.start > exclusion.start && vm.exclusion.end < exclusion.end) {
+                vm.error = 'adminExistingDate';
                 safe = false;
             }
         });
@@ -252,6 +365,12 @@ export const homeController = ng.controller('HomeController', ['$scope', 'Config
 
     const checkDate = (): boolean => {
         let check = true;
+        let today = new Date();
+        today.setDate(today.getDate() - 1);
+        if (vm.callback.callback_date < today) {
+            vm.error = 'studentOldDate';
+            return false;
+        }
         vm.config.exclusions.forEach( ex => {
             let startValues = ex.start.split("/");
             let endValues = ex.end.split("/");
@@ -261,7 +380,7 @@ export const homeController = ng.controller('HomeController', ['$scope', 'Config
 
             // Check is the selected date is available (not in closed period)
             if (startDate <= vm.callback.callback_date && vm.callback.callback_date < endDate) {
-                vm.error = 'studentDate';
+                vm.error = 'studentClosedDate';
                 vm.exclusion = ex;
                 check = false;
             }
@@ -282,7 +401,7 @@ export const homeController = ng.controller('HomeController', ['$scope', 'Config
         return true;
     };
 
-    const setModifierParams = (name:string): void => {
+    const setModifierParams = (name: string): void => {
         switch(name) {
             case "header": {
                 vm.message = vm.config.messages.header; break;

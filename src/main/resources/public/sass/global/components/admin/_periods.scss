@@ -14,8 +14,10 @@
     @media screen and (min-width: 1200px) {
       br { display: none }
     }
-    @media screen and (max-width: 400px) {
-      width: 150px;
+    @media screen and (max-width: 500px) {
+      br { display: none }
+      width: 200px;
+      font-size: 12px !important;
     }
   }
 
@@ -31,7 +33,7 @@
   }
 
   tr td:first-child {
-    font-size: 18px;
+    font-size: 17px;
   }
 
   th, td {

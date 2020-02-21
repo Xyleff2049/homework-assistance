@@ -1,4 +1,4 @@
-<div ng-include="'/homework-assistance/public/template/lightboxes/delete_lightbox.html'"></div>
-<div ng-include="'/homework-assistance/public/template/lightboxes/add_lightbox.html'"></div>
+<div ng-if="hasRight('admin')" ng-include="'/homework-assistance/public/template/lightboxes/delete_lightbox.html'"></div>
+<div ng-if="hasRight('admin')" ng-include="'/homework-assistance/public/template/lightboxes/add_lightbox.html'"></div>
+<div ng-if="hasRight('admin')" ng-include="'/homework-assistance/public/template/lightboxes/modifier_lightbox.html'"></div>
 <div ng-include="'/homework-assistance/public/template/lightboxes/error_lightbox.html'"></div>
-<div ng-include="'/homework-assistance/public/template/lightboxes/modifier_lightbox.html'"></div>

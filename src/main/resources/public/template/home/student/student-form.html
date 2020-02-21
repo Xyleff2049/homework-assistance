@@ -10,7 +10,7 @@
         </div>
         <div class="block-line">
             <p><i18n>student.subject</i18n></p>
-            <select class="style-bord-with-over-effect" ng-model="vm.callback.userdata.service" required>
+            <select ng-model="vm.callback.userdata.service" required>
                 <option id="Francais" value="76">Français</option>
                 <option id="Anglais" value="80">Anglais</option>
                 <option id="Espagnol" value="81">Espagnol</option>
@@ -21,7 +21,7 @@
         <div class="block-line">
             <p><i18n>student.tel</i18n></p>
             <div>
-                <i class="phone lg-icon"></i>
+                <img data-ng-src="/homework-assistance/public/img/smartphone.svg" alt="smartphone-picture" class="phone"/>
                 <input type="text" placeholder="+33 06..." ng-model="vm.callback.destination" required>
             </div>
         </div>

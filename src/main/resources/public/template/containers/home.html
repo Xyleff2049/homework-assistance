@@ -7,6 +7,12 @@
                 <div class="flex-header">
                     <i class="dot-circled hg-icon"></i>
                     <div class="flex">
+<!--                        <textarea class="newMessage"-->
+<!--                                  rows="3"-->
+<!--                                  name="header_input"-->
+<!--                                  ng-model="vm.config.messages.header"-->
+<!--                                  value="vm.config.messages.header">-->
+<!--                        </textarea>-->
                         <div class="multilines">[[vm.config.messages.header]]</div>
                         <button ng-if="hasRight('admin')" type="button" class="classic-button" ng-click="vm.showLightbox('header')">
                             <i class="modif lg-icon icon-spacing"></i>
@@ -14,7 +20,7 @@
                     </div>
                 </div>
             </section>
-            <section id="offer" class="important-txt">
+            <section id="offer">
                 <div class="flex">
                     <div class="multilines">[[vm.config.messages.body]]</div>
                     <button ng-if="hasRight('admin')" type="button" class="classic-button" ng-click="vm.showLightbox('body')">
@@ -23,41 +29,43 @@
                 </div>
             </section>
             <section>
-                <div class="column">
-                    <p id="availabilityTitle"><i18n>homework-assistance.availabilityTitle</i18n></p>
-                    <div class="flex">
-                        <p>
-                            <i class="calendar-o lg-icon icon-spacing"></i>[[vm.config.messages.days]]
-                            <div ng-if="hasRight('admin')">
-                                <button type="button" class="classic-button" ng-click="vm.showLightbox('days')">
-                                    <i class="modif lg-icon icon-spacing"></i>
-                                </button>
-                            </div>
-                        </p>
+                <div class="flex-info">
+                    <div class="column info-txt">
+                        <p id="availabilityTitle"><i18n>homework-assistance.availabilityTitle</i18n></p>
+                        <div class="flex">
+                            <p>
+                                <i class="calendar-o lg-icon icon-spacing"></i>[[vm.config.messages.days]]
+                                <div ng-if="hasRight('admin')">
+                                    <button type="button" class="classic-button" ng-click="vm.showLightbox('days')">
+                                        <i class="modif lg-icon icon-spacing"></i>
+                                    </button>
+                                </div>
+                            </p>
+                        </div>
+                        <div class="flex">
+                            <p>
+                                <i class="clock lg-icon icon-spacing"></i>[[vm.config.messages.time]]
+                                <div ng-if="hasRight('admin')">
+                                    <button type="button" class="classic-button" ng-click="vm.showLightbox('time')">
+                                        <i class="modif lg-icon icon-spacing"></i>
+                                    </button>
+                                </div>
+                            </p>
+                        </div>
+                        <div class="flex">
+                            <p>
+                                <i class="info-circled-1 lg-icon icon-spacing"></i>[[vm.config.messages.info]]
+                                <div ng-if="hasRight('admin')">
+                                    <button type="button" class="classic-button" ng-click="vm.showLightbox('info')">
+                                        <i class="modif lg-icon icon-spacing"></i>
+                                    </button>
+                                </div>
+                            </p>
+                        </div>
                     </div>
-                    <div class="flex">
-                        <p>
-                            <i class="clock lg-icon icon-spacing"></i>[[vm.config.messages.time]]
-                            <div ng-if="hasRight('admin')">
-                                <button type="button" class="classic-button" ng-click="vm.showLightbox('time')">
-                                    <i class="modif lg-icon icon-spacing"></i>
-                                </button>
-                            </div>
-                        </p>
+                    <div class="column studying">
+                        <img data-ng-src="/homework-assistance/public/img/studying.svg" alt="smartphone-picture"/>
                     </div>
-                    <div class="flex">
-                        <p>
-                            <i class="info-circled-1 lg-icon icon-spacing"></i>[[vm.config.messages.info]]
-                            <div ng-if="hasRight('admin')">
-                                <button type="button" class="classic-button" ng-click="vm.showLightbox('info')">
-                                    <i class="modif lg-icon icon-spacing"></i>
-                                </button>
-                            </div>
-                        </p>
-                    </div>
-                </div>
-                <div class="column">
-
                 </div>
             </section>
         </article>

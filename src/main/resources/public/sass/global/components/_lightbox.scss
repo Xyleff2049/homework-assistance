@@ -7,6 +7,11 @@ lightbox {
     }
   }
 
+  .flex-lightbox-add {
+    display: flex;
+    flex-direction: column;
+  }
+
   section.lightbox > div.content {
     @media screen and (max-width: 800px) {
       min-height: 10px;

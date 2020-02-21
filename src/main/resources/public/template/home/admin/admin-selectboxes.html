@@ -2,8 +2,8 @@
 <div class="select-boxes">
     <div class="inline">
         <span class="inline"><i18n>admin.availabilityHours.from</i18n></span>
-        <div class="inline custom-select-1">
-            <select id="start_hour" class="style-bord-with-over-effect" ng-change="vm.saveConfig()" ng-model="vm.config.times.start.hour">
+        <div class="inline custom-select-1 time-picker">
+            <select id="start_hour" ng-change="vm.saveConfig()" ng-model="vm.config.times.start.hour">
                 <option value="8">08</option>
                 <option value="9">09</option>
                 <option value="10">10</option>
@@ -24,7 +24,7 @@
         </div>
         <span class="inline"><i18n>admin.availabilityHours.connector</i18n></span>
         <div class="inline custom-select-2">
-            <select id="start_minute" class="style-bord-with-over-effect" ng-change="vm.saveConfig()" ng-model="vm.config.times.start.minute">
+            <select id="start_minute" ng-change="vm.saveConfig()" ng-model="vm.config.times.start.minute">
                 <option value="0">00</option>
                 <option value="5">05</option>
                 <option value="10">10</option>
@@ -44,7 +44,7 @@
     <div class="inline">
         <span class="inline"><i18n>admin.availabilityHours.to</i18n></span>
         <div class="inline custom-select-1">
-            <select id="end_hour" class="style-bord-with-over-effect" ng-change="vm.saveConfig()" ng-model="vm.config.times.end.hour">
+            <select id="end_hour" ng-change="vm.saveConfig()" ng-model="vm.config.times.end.hour">
                 <option value="8">08</option>
                 <option value="9">09</option>
                 <option value="10">10</option>
@@ -65,7 +65,7 @@
         </div>
         <span class="inline"><i18n>admin.availabilityHours.connector</i18n></span>
         <div class="inline custom-select-2">
-            <select id="end_minute" class="style-bord-with-over-effect" ng-change="vm.saveConfig()" ng-model="vm.config.times.end.minute">
+            <select id="end_minute" ng-change="vm.saveConfig()" ng-model="vm.config.times.end.minute">
                 <option value="0">00</option>
                 <option value="5">05</option>
                 <option value="10">10</option>
