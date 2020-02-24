@@ -63,7 +63,7 @@ export const homeController = ng.controller('HomeController', ['$scope', 'Config
 
     vm.sendForm = async (): Promise<void> => {
         let dateValid = checkDate();
-        let timeValid = checkTime();
+        let timeValid = checkCallbackTime();
         if (dateValid && timeValid) {
             let response = await callbackService.post(vm.callback);
             if (response.status == 200 || response.status == 201) {
@@ -80,12 +80,18 @@ export const homeController = ng.controller('HomeController', ['$scope', 'Config
     };
 
     vm.saveConfig = async (): Promise<void> => {
-        let response = await configService.put(vm.config);
-        if (response.status == 200 || response.status == 201) {
-            toasts.confirm(idiom.translate('admin.save'));
-            vm.config.mongoToModel(response.data);
-        } else {
-            toasts.warning(response.data.toString());
+        if (checkConfigTime()) {
+            let response = await configService.put(vm.config);
+            if (response.status == 200 || response.status == 201) {
+                toasts.confirm(idiom.translate('admin.save'));
+                vm.config.mongoToModel(response.data);
+            }
+            else {
+                toasts.warning(response.data.toString());
+            }
+        }
+        else {
+            vm.showLightbox('error');
         }
         // console.log("saveConfig");
         // console.log(vm.config);
@@ -378,7 +384,7 @@ export const homeController = ng.controller('HomeController', ['$scope', 'Config
         return check;
     };
 
-    const checkTime = (): boolean => {
+    const checkCallbackTime = (): boolean => {
         /* if   (hour out of bounds) ||
                 (hour = startHour but minute is before start) ||
                 (hour = endHour but minute is after end)*/
@@ -386,6 +392,15 @@ export const homeController = ng.controller('HomeController', ['$scope', 'Config
             (vm.callback.callback_time.hour === vm.config.times.start.hour && vm.callback.callback_time.minute < vm.config.times.start.minute) ||
             (vm.callback.callback_time.hour === vm.config.times.end.hour && vm.callback.callback_time.minute > vm.config.times.end.minute)) {
             vm.error = 'studentTime';
+            return false;
+        }
+        return true;
+    };
+
+    const checkConfigTime = (): boolean => {
+        if ((vm.config.times.start.hour > vm.config.times.end.hour) ||
+            (vm.config.times.start.hour === vm.config.times.end.hour && vm.config.times.start.minute >= vm.config.times.end.minute)) {
+            vm.error = 'adminReverseTime';
             return false;
         }
         return true;

@@ -20,4 +20,8 @@
         Attention, la date de début est supérieure à la date de fin. Veuillez essayer d'autres dates.
         <input type="button" class="inline" ng-click="vm.hideLightbox('error')" i18n-value="admin.close" />
     </div>
+    <div ng-if="vm.error == 'adminReverseTime'" class="flex-lightbox">
+        Attention, l'heure de début est supérieure à l'heure de fin. Veuillez essayer d'autres heures.
+        <input type="button" class="inline" ng-click="vm.hideLightbox('error')" i18n-value="admin.close" />
+    </div>
 </lightbox>
