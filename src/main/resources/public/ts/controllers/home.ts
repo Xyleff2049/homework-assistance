@@ -7,6 +7,7 @@ import {callbackService, configService} from '../services';
 interface ViewModel {
     callback: Callback;
     error: string;
+    minutesOpt: number[];
     config: Config;
     lightbox: {
         delete: boolean,
@@ -28,9 +29,9 @@ interface ViewModel {
     showLightbox(string, number?): void;
     hideLightbox(string): void;
     getTodayDate(): string;
-    getTimes(number): string;
-    getHoursOpt(): string[];
-    getMinutesOpt(): string[];
+    getTimeFormat(number): string;
+    getHoursOpt(): number[];
+    calculateMinutesOpt(): void;
     // test(string): void;
     // test2(string): void;
 }
@@ -45,6 +46,7 @@ export const homeController = ng.controller('HomeController', ['$scope', 'Config
 
     vm.callback = new Callback();
     vm.error = "";
+    vm.minutesOpt = [];
 
     vm.config = new Config();
     vm.message = "";
@@ -202,78 +204,66 @@ export const homeController = ng.controller('HomeController', ['$scope', 'Config
         return DateUtils.format(new Date(), DateUtils.FORMAT["YEAR-MONTH-DAY"]);
     };
 
-    vm.getTimes = (n: number): string  => {
-        if (n.toString().length < 2) {
-            return "0" + n.toString();
+    vm.getTimeFormat = (n: number) : string => {
+        let s = n.toString();
+        if (s.length < 2) {
+            return "0" + s;
         }
-        return n.toString();
-    };
+        else {
+            return s;
+        }
+    }
 
-    vm.getHoursOpt = (): string[] => {
+    vm.getHoursOpt = (): number[] => {
         let hours = [];
         for (let i = vm.config.times.start.hour; i <= vm.config.times.end.hour; i++) {
             if (i === vm.config.times.end.hour && vm.config.times.end.minute === 0) {
                 break;
             }
-            let stringI = i.toString();
-            if (stringI.length < 2) {
-                hours.push("0" + stringI);
-            }
-            else {
-                hours.push(stringI);
-            }
+            hours.push(i);
         }
         return hours;
     };
 
-    vm.getMinutesOpt = (): string[] => {
+    vm.calculateMinutesOpt = (): void => {
         let minutes = [];
-        if (vm.config.times.start.hour === vm.config.times.end.hour) {
-            for (let i = vm.config.times.start.minute; i <= vm.config.times.end.minute; i+=5) {
-                let stringI = i.toString();
-                if (stringI.length < 2) {
-                    minutes.push("0" + stringI);
-                }
-                else {
-                    minutes.push(stringI);
-                }
+        let selectedHour = parseInt(vm.callback.callback_time.hour.toString());
+        let starth = parseInt(vm.config.times.start.hour.toString());
+        let endh = parseInt(vm.config.times.end.hour.toString());
+        let startm = parseInt(vm.config.times.start.minute.toString());
+        let endm= parseInt(vm.config.times.end.minute.toString());
+
+        if (starth === endh) {
+            for (let i = startm; i <= endm; i+=5) {
+                minutes.push(i);
             }
         }
-        else if (vm.config.times.start.hour < vm.config.times.end.hour && vm.config.times.start.minute <= vm.config.times.end.minute) {
+        else if (selectedHour === starth) {
+            for (let i = startm; i <= 55; i+=5) {
+                minutes.push(i);
+            }
+        }
+        else if (selectedHour === endh) {
+            for (let i = 0; i <= endm; i+=5) {
+                minutes.push(i);
+            }
+        }
+        else if (selectedHour > starth && selectedHour < endh) {
             for (let i = 0; i <= 55; i+=5) {
-                let stringI = i.toString();
-                if (stringI.length < 2) {
-                    minutes.push("0" + stringI);
-                }
-                else {
-                    minutes.push(stringI);
-                }
-            }
-        }
-        else if (vm.config.times.start.hour < vm.config.times.end.hour && vm.config.times.start.minute > vm.config.times.end.minute) {
-            for (let i = vm.config.times.start.minute; i <= 55; i+=5) {
-                let stringI = i.toString();
-                if (stringI.length < 2) {
-                    minutes.push("0" + stringI);
-                }
-                else {
-                    minutes.push(stringI);
-                }
-            }
-            for (let i = 0; i < vm.config.times.end.minute; i+=5) {
-                let stringI = i.toString();
-                if (stringI.length < 2) {
-                    minutes.push("0" + stringI);
-                }
-                else {
-                    minutes.push(stringI);
-                }
+                minutes.push(i);
             }
         }
         else {
-            console.log("Invalid hours define by the admin");
+            console.log("Invalid hours defined by the admin");
         }
-        return minutes;
+
+        try {
+            vm.minutesOpt = minutes;
+            vm.callback.callback_time.minute = vm.minutesOpt[0];
+        }
+        catch (err) {
+            throw err;
+        }
     };
 
     /*
@@ -321,7 +311,7 @@ export const homeController = ng.controller('HomeController', ['$scope', 'Config
             vm.callback.userdata.matiere = services[vm.callback.userdata.service];
             vm.callback.callback_date = new Date();
             vm.callback.callback_time.hour = vm.config.times.start.hour;
-            vm.callback.callback_time.minute = vm.config.times.start.minute;
+            vm.calculateMinutesOpt();
             // console.log("loadCallback");
             // console.log(vm.callback);
             $scope.safeApply();
@@ -391,7 +381,7 @@ export const homeController = ng.controller('HomeController', ['$scope', 'Config
     const checkTime = (): boolean => {
         /* if   (hour out of bounds) ||
                 (hour = startHour but minute is before start) ||
-                (hour = edHour but minute is after end) */
+                (hour = endHour but minute is after end)*/
         if ((vm.callback.callback_time.hour < vm.config.times.start.hour || vm.callback.callback_time.hour > vm.config.times.end.hour) ||
             (vm.callback.callback_time.hour === vm.config.times.start.hour && vm.callback.callback_time.minute < vm.config.times.start.minute) ||
             (vm.callback.callback_time.hour === vm.config.times.end.hour && vm.callback.callback_time.minute > vm.config.times.end.minute)) {

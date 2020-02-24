@@ -8,7 +8,6 @@
                           ng-model="vm.callback.callback_date"
                           required>
              </date-picker>
-<!--        <input id="date" type="date" name="date" class="inline custom-select-2" ng-model="vm.callback.callback_date" min=[[vm.getTodayDate()]] required>-->
         </span>
     </div>
     <br/>
@@ -16,14 +15,15 @@
         <i18n>student.rdv.from</i18n>
         <div class="inline custom-select-1 time-picker">
             <select ng-model="vm.callback.callback_time.hour"
-                    ng-options="opt for opt in vm.getHoursOpt()"
+                    ng-options="vm.getTimeFormat(opt) for opt in vm.getHoursOpt()"
+                    ng-change="vm.calculateMinutesOpt()"
                     required>
             </select>
         </div>
         <i18n class="inline">student.rdv.connector</i18n>
         <div class="inline custom-select-2">
             <select ng-model="vm.callback.callback_time.minute"
-                    ng-options="opt for opt in vm.getMinutesOpt()"
+                    ng-options="vm.getTimeFormat(opt) for opt in vm.minutesOpt"
                     required>
             </select>
         </div>
