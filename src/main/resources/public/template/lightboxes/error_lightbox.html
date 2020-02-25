@@ -4,8 +4,12 @@
         et [[vm.getTimeFormat(vm.config.times.end.hour)]]h[[vm.getTimeFormat(vm.config.times.end.minute)]]. Veuillez essayer un autre moment.
         <input type="button" class="inline" ng-click="vm.hideLightbox('error')" i18n-value="admin.close" />
     </div>
+    <div ng-if="vm.error == 'studentWrongDay'" class="flex-lightbox">
+        Ce jour de la semaine est indisponible. Veuillez essayer une autre date.
+        <input type="button" class="inline" ng-click="vm.hideLightbox('error')" i18n-value="admin.close" />
+    </div>
     <div ng-if="vm.error == 'studentClosedDate'" class="flex-lightbox">
-        La période du [[vm.exclusion.start]] au [[vm.exclusion.end]] est indisponible . Veuillez essayer une autre date.
+        La période du [[vm.exclusion.start]] au [[vm.exclusion.end]] est indisponible. Veuillez essayer une autre date.
         <input type="button" class="inline" ng-click="vm.hideLightbox('error')" i18n-value="admin.close" />
     </div>
     <div ng-if="vm.error == 'studentOldDate'" class="flex-lightbox">

@@ -4,6 +4,7 @@ import io.vertx.core.AsyncResult;
 import io.vertx.core.Future;
 import io.vertx.core.Handler;
 import io.vertx.core.Vertx;
+import io.vertx.core.http.HttpClientResponse;
 import io.vertx.core.json.JsonObject;
 import io.vertx.core.buffer.Buffer;
 import io.vertx.core.http.HttpClient;
@@ -84,7 +85,8 @@ public class KiamoHelper extends ControllerHelper {
                 response.endHandler(end -> handler.handle(Future.succeededFuture(buff)));
             } else {
                 log.error("[HomeworkAssistance@Kiamo] Fail to post webservice : " + response.statusMessage());
-                response.bodyHandler(event -> {});
+                response.bodyHandler(event -> {
+                });
             }
         });
 

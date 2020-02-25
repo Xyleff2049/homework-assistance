@@ -62,12 +62,13 @@ export const homeController = ng.controller('HomeController', ['$scope', 'Config
 
 
     vm.sendForm = async (): Promise<void> => {
-        let dateValid = checkDate();
+        let dayValid = checkCallbackDay();
+        let dateValid = checkCallbackDate();
         let timeValid = checkCallbackTime();
-        if (dateValid && timeValid) {
+        if (dayValid && dateValid && timeValid) {
             let response = await callbackService.post(vm.callback);
             if (response.status == 200 || response.status == 201) {
-                printDataCallback(response.data.body);
+                printCallbackData(response.data.body);
                 toasts.confirm(idiom.translate('student.send'));
             } else {
                 toasts.warning(response.data.toString());
@@ -359,7 +360,22 @@ export const homeController = ng.controller('HomeController', ['$scope', 'Config
             }
         };
 
-    const checkDate = (): boolean => {
+    const checkCallbackDay = (): boolean => {
+        let dayChoice = new Date(vm.callback.callback_date).getDay();
+        if ((dayChoice === 1  && !vm.config.days.monday) ||
+            (dayChoice === 2  && !vm.config.days.tuesday) ||
+            (dayChoice === 3  && !vm.config.days.wednesday) ||
+            (dayChoice === 4  && !vm.config.days.thursday) ||
+            (dayChoice === 5  && !vm.config.days.friday) ||
+            (dayChoice === 6  && !vm.config.days.saturday) ||
+            (dayChoice === 0  && !vm.config.days.sunday)) {
+            vm.error = 'studentWrongDay';
+            return false;
+        }
+        return true;
+};
+
+    const checkCallbackDate = (): boolean => {
         let check = true;
         let today = new Date();
         today.setDate(today.getDate() - 1);
@@ -430,7 +446,7 @@ export const homeController = ng.controller('HomeController', ['$scope', 'Config
         vm.modifier = name;
     };
 
-    const printDataCallback = (data: any): void => {
+    const printCallbackData = (data: any): void => {
         console.log(JSON.parse(data.parameters.toString()));
     };
 
