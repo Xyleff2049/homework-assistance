@@ -1,4 +1,10 @@
 lightbox {
+  .content {
+    @media screen and (max-width: 800px) {
+      min-height: 10px !important;
+    }
+  }
+
   .flex-lightbox {
     display: flex;
     align-items: center;
@@ -7,14 +13,22 @@ lightbox {
     }
   }
 
-  .flex-lightbox-add {
+  .flex-column {
     display: flex;
     flex-direction: column;
+
+    .flex-column {
+      margin-bottom: 2%;
+    }
   }
 
-  section.lightbox > div.content {
-    @media screen and (max-width: 800px) {
-      min-height: 10px;
-    }
+  .dateSized {
+    width : 300px;
+    margin-bottom: 5px;
+  }
+
+  .stick-right {
+    margin-left: auto;
+    margin-right: 20px;
   }
 }

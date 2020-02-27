@@ -2,7 +2,6 @@ i {
   &.icon-spacing {
     padding-right: 15px;
     padding-left: 15px;
-
     @media screen and (min-width: 800px) and (max-width: 1200px) {
       padding-right: 0px;
     }
@@ -18,7 +17,6 @@ i {
 
   &.md-icon {
     font-size: 20px;
-
     @media screen and (max-width: 500px) {
       font-size: 14px;
     }
@@ -26,7 +24,6 @@ i {
 
   &.lg-icon {
     font-size: 24px;
-
     @media screen and (max-width: 500px) {
       font-size: 16px;
     }
@@ -37,7 +34,6 @@ i {
 
   &.hg-icon {
     font-size: 40px;
-
     @media screen and (max-width: 500px) {
       font-size: 30px;
     }
@@ -143,18 +139,6 @@ i {
     width: 60%;
   }
 }
-
-.info-txt {
-  flex: 1 1 0;
-  @media screen and (min-width: 800px) and (max-width: 1000px) {
-    align-self: center;
-  }
-  @media screen and (max-width: 500px) {
-    align-self: center;
-    margin-top: 2%;
-  }
-}
-
 
 input:invalid+span:after {
   position: absolute; content: '✖';

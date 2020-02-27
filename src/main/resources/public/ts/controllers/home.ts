@@ -9,14 +9,13 @@ interface ViewModel {
     error: string;
     minutesOpt: number[];
     config: Config;
+    exclusion: Exclusion;
+    index: number;
     lightbox: {
         delete: boolean,
         add: boolean,
         error: boolean
     };
-    modifier: string;
-    exclusion: Exclusion;
-    index: number;
 
     sendForm(): Promise<void>;
     saveConfig(): Promise<void>;
@@ -53,7 +52,6 @@ export const homeController = ng.controller('HomeController', ['$scope', 'Config
         add: false,
         error: false
     };
-    vm.modifier = "";
 
 
     vm.sendForm = async (): Promise<void> => {

@@ -4,9 +4,12 @@ $homeworkassistance-black: rgba(0, 0, 0, .87);
 $homeworkassistance-grey: #d6d6d6;
 
 body.homework-assistance {
-
   @import "components/index";
   @import "generic/index";
+
+  @media screen and (max-width: 500px) {
+    font-size: 12px;
+  }
 
   .title-row {
     @media screen and (max-width: 800px) {
@@ -26,7 +29,6 @@ body.homework-assistance {
   .block-line {
     margin-top: 3%;
     padding-right: 10px;
-
     @media screen and (max-width: 500px) {
       margin: 0;
     }
@@ -39,7 +41,6 @@ body.homework-assistance {
   .important-txt {
     font-size: 18px;
     color: black;
-
     @media screen and (max-width: 500px) {
       font-size: 14px;
     }
@@ -49,27 +50,6 @@ body.homework-assistance {
     font-size: 18px;
     font-weight: bold;
     margin-bottom: 5%;
-
-    @media screen and (max-width: 500px) {
-      font-size: 14px;
-    }
-  }
-
-  #offer {
-    text-align: center;
-    padding-right: 15%;
-    padding-left: 15%;
-
-    @media screen and (max-width: 500px) {
-      padding-right: 5%;
-      padding-left: 5%;
-    }
-  }
-
-  #availabilityTitle {
-    font-size: 18px;
-    color: black;
-
     @media screen and (max-width: 500px) {
       font-size: 14px;
     }
@@ -79,20 +59,6 @@ body.homework-assistance {
     display: inline;
     list-style: none; /* pour enlever les puces sur IE7 */
     margin: 5px;
-  }
-
-  #date {
-    width: 25%;
-    @media screen and (max-width: 600px) {
-      width: 50%;
-    }
-    @media screen and (min-width: 800px) and (max-width: 1200px) {
-      width: 50%;
-    }
-  }
-
-  #other-informations {
-    width: 80%;
   }
 
   button {
@@ -112,24 +78,6 @@ body.homework-assistance {
     align-items: center;
   }
 
-  .multilines {
-    white-space: pre-line;
-    cursor: text !important;
-
-    @media screen and (max-width: 800px) {
-      text-align: center;
-    }
-  }
-
-  .newMessage {
-    width: 50%;
-    margin: 0 2% 0 2%;
-  }
-
-  .dateSized {
-    width : 300px;
-  }
-
   select {
     min-width: 50px !important;
     border: none;
@@ -141,12 +89,17 @@ body.homework-assistance {
     }
   }
 
-  .stick-right {
-    margin-left: auto;
-    margin-right: 20px;
+  #date {
+    width: 25%;
+    @media screen and (max-width: 600px) {
+      width: 50%;
+    }
+    @media screen and (min-width: 800px) and (max-width: 1200px) {
+      width: 50%;
+    }
   }
 
-  @media screen and (max-width: 500px) {
-    font-size: 12px;
+  #other-informations {
+    width: 80%;
   }
 }
