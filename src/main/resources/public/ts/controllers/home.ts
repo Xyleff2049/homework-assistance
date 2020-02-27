@@ -12,17 +12,16 @@ interface ViewModel {
     lightbox: {
         delete: boolean,
         add: boolean,
-        error: boolean,
-        modifier: boolean
+        error: boolean
     };
     modifier: string;
-    message: string;
     exclusion: Exclusion;
     index: number;
 
     sendForm(): Promise<void>;
     saveConfig(): Promise<void>;
     saveMessage(string): Promise<void>;
+    focusText(string): Promise<void>;
     addExclusion(): Promise<void>;
     deleteExclusion(): Promise<void>;
     getClassName(): string;
@@ -32,8 +31,6 @@ interface ViewModel {
     getTimeFormat(number): string;
     getHoursOpt(): number[];
     calculateMinutesOpt(): void;
-    // test(string): void;
-    // test2(string): void;
 }
 
 
@@ -49,14 +46,12 @@ export const homeController = ng.controller('HomeController', ['$scope', 'Config
     vm.minutesOpt = [];
 
     vm.config = new Config();
-    vm.message = "";
     vm.exclusion = new Exclusion(new Date(), new Date());
     vm.index = 0;
     vm.lightbox = {
         delete: false,
         add: false,
-        error: false,
-        modifier: false
+        error: false
     };
     vm.modifier = "";
 
@@ -99,33 +94,56 @@ export const homeController = ng.controller('HomeController', ['$scope', 'Config
         $scope.safeApply();
     };
 
-    vm.saveMessage = async (name: string): Promise<void> => {
-        switch(name) {
-            case "header": {
-                vm.config.messages.header = vm.message;
+    vm.saveMessage = async (idName: string): Promise<void> => {
+        let save = false;
+        let input = document.getElementById(idName).innerText;
+        switch(idName) {
+            case "message-header": {
+                if (input != vm.config.messages.header) {
+                    vm.config.messages.header = input;
+                    save = true;
+                }
                 break;
             }
-            case "body": {
-                vm.config.messages.body = vm.message;
+            case "message-body": {
+                if (input != vm.config.messages.body) {
+                    vm.config.messages.body = input;
+                    save = true;
+                }
                 break;
             }
-            case "time": {
-                vm.config.messages.time = vm.message;
+            case "message-time": {
+                if (input != vm.config.messages.time) {
+                    vm.config.messages.time = input;
+                    save = true;
+                }
                 break;
             }
-            case "days": {
-                vm.config.messages.days = vm.message;
+            case "message-days": {
+                if (input != vm.config.messages.days) {
+                    vm.config.messages.days = input;
+                    save = true;
+                }
                 break;
             }
-            case "info": {
-                vm.config.messages.info = vm.message;
+            case "message-info": {
+                if (input != vm.config.messages.info) {
+                    vm.config.messages.info = input;
+                    save = true;
+                }
                 break;
             }
             default: {
                 break;
             }
         }
-        await vm.saveConfig();
+        if (save) {
+            await vm.saveConfig();
+        }
+    };
+
+    vm.focusText = async (idName: string): Promise<void> => {
+        document.getElementById(idName).focus();
     };
 
     vm.addExclusion = async (): Promise<void> => {
@@ -143,7 +161,7 @@ export const homeController = ng.controller('HomeController', ['$scope', 'Config
         }
         else {
             vm.showLightbox('error');
-            console.log("[ERROR] One or several of these dates already exist.")
+            // console.log("[ERROR] One or several of these dates already exist.")
         }
     };
 
@@ -181,8 +199,7 @@ export const homeController = ng.controller('HomeController', ['$scope', 'Config
                 vm.lightbox.error = true; break;
             }
             default: {
-                setModifierParams(name);
-                vm.lightbox.modifier = true; break;
+                break;
             }
         }
     };
@@ -197,9 +214,6 @@ export const homeController = ng.controller('HomeController', ['$scope', 'Config
             }
             case "error": {
                 vm.lightbox.error = false; break;
-            }
-            case "modifier": {
-                vm.lightbox.modifier = false; break;
             }
             default: {
                 break;
@@ -273,31 +287,6 @@ export const homeController = ng.controller('HomeController', ['$scope', 'Config
         }
     };
 
-    /*
-    vm.test = (id: string): void  => {
-        let original = document.getElementById('id');
-        let replacement = document.createElement('textarea');
-        replacement.setAttribute("id",id);
-        replacement.setAttribute("class","newMessage");
-        replacement.setAttribute("value", vm.message);
-        replacement.setAttribute("ng-model", vm.message);
-        replacement.setAttribute("ng-blur", "vm.test2(" + id + ")");
-        replacement.innerHTML = original.innerHTML;
-        original.parentNode.replaceChild(replacement, original);
-        replacement.focus();
-    };
-    vm.test2 = (id: string): void  => {
-        let original = document.getElementById('id');
-        let replacement = document.createElement('div');
-        replacement.setAttribute("id", id);
-        replacement.setAttribute("class","multilines");
-        replacement.setAttribute("ng-click","vm.test("+ id + ")");
-        replacement.textContent = vm.message;
-        original.innerHTML = original.innerHTML;
-        original.parentNode.replaceChild(replacement, original);
-    };
-    */
-
 
     const loadConfig = async (): Promise<void> => {
         let response = await configService.get();
@@ -322,42 +311,6 @@ export const homeController = ng.controller('HomeController', ['$scope', 'Config
             // console.log("loadCallback");
             // console.log(vm.callback);
             $scope.safeApply();
-        };
-
-    const checkExclusion = (): boolean => {
-        let safe = true;
-        vm.config.exclusions.forEach(exclusion => {
-            if (vm.exclusion.start >= vm.exclusion.end) {
-                vm.error = 'adminReverseDate';
-                safe = false;
-            }
-            else if (
-                exclusion.start === vm.exclusion.start ||
-                exclusion.end === vm.exclusion.end ||
-                vm.exclusion.start > exclusion.start && vm.exclusion.end < exclusion.end) {
-                vm.error = 'adminExistingDate';
-                safe = false;
-            }
-        });
-        return safe;
-    };
-
-    const sortExclusion = (ex1:Exclusion, ex2:Exclusion): number => {
-            let startValues1 = ex1.start.split("/");
-            let startValues2 = ex2.start.split("/");
-
-            let date1 = new Date(parseInt(startValues1[2]), parseInt(startValues1[1])-1, parseInt(startValues1[0]));
-            let date2 = new Date(parseInt(startValues2[2]), parseInt(startValues2[1])-1, parseInt(startValues2[0])+1);
-
-            if (date1 > date2) {
-                return 1;
-            }
-            else if (date1 < date2) {
-                return -1;
-            }
-            else {
-                return 0;
-            }
         };
 
     const checkCallbackDay = (): boolean => {
@@ -422,28 +375,40 @@ export const homeController = ng.controller('HomeController', ['$scope', 'Config
         return true;
     };
 
-    const setModifierParams = (name: string): void => {
-        switch(name) {
-            case "header": {
-                vm.message = vm.config.messages.header; break;
+    const checkExclusion = (): boolean => {
+        let safe = true;
+        vm.config.exclusions.forEach(exclusion => {
+            if (vm.exclusion.start > vm.exclusion.end) {
+                vm.error = 'adminReverseDate';
+                safe = false;
             }
-            case "body": {
-                vm.message = vm.config.messages.body; break;
+            else if (
+                exclusion.start === vm.exclusion.start ||
+                exclusion.end === vm.exclusion.end ||
+                vm.exclusion.start > exclusion.start && vm.exclusion.end < exclusion.end) {
+                vm.error = 'adminExistingDate';
+                safe = false;
             }
-            case "time": {
-                vm.message = vm.config.messages.time; break;
-            }
-            case "days": {
-                vm.message = vm.config.messages.days; break;
-            }
-            case "info": {
-                vm.message = vm.config.messages.info; break;
-            }
-            default: {
-                break;
-            }
+        });
+        return safe;
+    };
+
+    const sortExclusion = (ex1:Exclusion, ex2:Exclusion): number => {
+        let startValues1 = ex1.start.split("/");
+        let startValues2 = ex2.start.split("/");
+
+        let date1 = new Date(parseInt(startValues1[2]), parseInt(startValues1[1])-1, parseInt(startValues1[0]));
+        let date2 = new Date(parseInt(startValues2[2]), parseInt(startValues2[1])-1, parseInt(startValues2[0])+1);
+
+        if (date1 > date2) {
+            return 1;
         }
-        vm.modifier = name;
+        else if (date1 < date2) {
+            return -1;
+        }
+        else {
+            return 0;
+        }
     };
 
     const printCallbackData = (data: any): void => {

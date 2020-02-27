@@ -24,7 +24,8 @@ body.homework-assistance {
   }
 
   .block-line {
-    margin-bottom: 3%;
+    margin-top: 3%;
+    padding-right: 10px;
 
     @media screen and (max-width: 500px) {
       margin: 0;
@@ -32,7 +33,7 @@ body.homework-assistance {
   }
 
   .block-line > p {
-    margin-bottom: 1%;
+    margin: 0% 0% 1% 0%;
   }
 
   .important-txt {
@@ -94,15 +95,6 @@ body.homework-assistance {
     width: 80%;
   }
 
-  #add-period {
-    color: darkorange;
-    height: 50px;
-
-    @media screen and (max-width: 500px) {
-      height: 30px;
-    }
-  }
-
   button {
     margin-right: 10px !important;
     padding: 0 !important;
@@ -122,6 +114,7 @@ body.homework-assistance {
 
   .multilines {
     white-space: pre-line;
+    cursor: text !important;
 
     @media screen and (max-width: 800px) {
       text-align: center;
@@ -146,6 +139,11 @@ body.homework-assistance {
       background-color: $homeworkassistance-main;
       color: $homeworkassistance-white;
     }
+  }
+
+  .stick-right {
+    margin-left: auto;
+    margin-right: 20px;
   }
 
   @media screen and (max-width: 500px) {

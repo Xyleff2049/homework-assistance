@@ -14,23 +14,22 @@
 
   article {
     width: 100%;
-    padding-right: 30px !important;
-    padding-left: 30px !important;
+    padding: 10px 0px 0px 30px !important;
     margin: 0;
+    display: flex;
+    flex-direction: column;
 
     @media screen and (max-width: 500px) {
-      padding: 0;
-      padding-top: 10px;
+      padding: 10px 0px 0px 0px !important;
     }
     @media screen and (max-width: 400px) {
-      padding-right: 10px !important;
-      padding-left: 10px !important;
+      padding: 10px 0px 0px 10px !important;
     }
   }
 
   section {
     padding-top: 4%;
-    padding-bottom: 4%;
+    margin-top: auto;
 
     .flex-header {
       display: flex;
@@ -42,7 +41,7 @@
 
     .flex-info {
       display: flex;
-      align-items: center;
+      align-items: flex-end;
       @media screen and (min-width: 800px) and (max-width: 1000px) {
         flex-direction: column;
       }
@@ -73,7 +72,6 @@
   .column {
     float: left;
     padding-left: 2%;
-    padding-right: 2%;
   }
 
   @media screen and (max-width: 800px) {

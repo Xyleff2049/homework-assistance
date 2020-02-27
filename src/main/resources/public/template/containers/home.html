@@ -6,25 +6,25 @@
             <section>
                 <div class="flex-header">
                     <i class="dot-circled hg-icon"></i>
-                    <div class="flex">
-<!--                        <textarea class="newMessage"-->
-<!--                                  rows="3"-->
-<!--                                  name="header_input"-->
-<!--                                  ng-model="vm.config.messages.header"-->
-<!--                                  value="vm.config.messages.header">-->
-<!--                        </textarea>-->
+                    <div class="flex" ng-if="hasRight('student')">
                         <div class="multilines">[[vm.config.messages.header]]</div>
-                        <button ng-if="hasRight('admin')" type="button" class="classic-button" ng-click="vm.showLightbox('header')">
+                    </div>
+                    <div class="flex" ng-if="hasRight('admin')">
+                        <div id="message-header" class="multilines" contenteditable="true" ng-blur="vm.saveMessage('message-header')">[[vm.config.messages.header]]</div>
+                        <button type="button" class="classic-button" ng-click="vm.focusText('message-header')">
                             <i class="modif lg-icon icon-spacing"></i>
                         </button>
                     </div>
                 </div>
             </section>
             <section id="offer">
-                <div class="flex">
+                <div class="flex" ng-if="hasRight('student')">
                     <div class="multilines">[[vm.config.messages.body]]</div>
-                    <button ng-if="hasRight('admin')" type="button" class="classic-button" ng-click="vm.showLightbox('body')">
-                        <i class="modif lg-icon"></i>
+                </div>
+                <div class="flex" ng-if="hasRight('admin')">
+                    <div id="message-body" class="multilines" contenteditable="true" ng-blur="vm.saveMessage('message-body')">[[vm.config.messages.body]]</div>
+                    <button type="button" class="classic-button" ng-click="vm.focusText('message-body')">
+                        <i class="modif lg-icon icon-spacing"></i>
                     </button>
                 </div>
             </section>
@@ -34,9 +34,11 @@
                         <p id="availabilityTitle"><i18n>homework-assistance.availabilityTitle</i18n></p>
                         <div class="flex">
                             <p>
-                                <i class="calendar-o lg-icon icon-spacing"></i>[[vm.config.messages.days]]
-                                <div ng-if="hasRight('admin')">
-                                    <button type="button" class="classic-button" ng-click="vm.showLightbox('days')">
+                                <i class="calendar-o lg-icon icon-spacing"></i>
+                                <div class="flex" ng-if="hasRight('student')">[[vm.config.messages.days]]</div>
+                                <div class="flex" ng-if="hasRight('admin')">
+                                    <div id="message-days" class="multilines" contenteditable="true" ng-blur="vm.saveMessage('message-days')">[[vm.config.messages.days]]</div>
+                                    <button type="button" class="classic-button" ng-click="vm.focusText('message-days')">
                                         <i class="modif lg-icon icon-spacing"></i>
                                     </button>
                                 </div>
@@ -44,22 +46,26 @@
                         </div>
                         <div class="flex">
                             <p>
-                                <i class="clock lg-icon icon-spacing"></i>[[vm.config.messages.time]]
-                                <div ng-if="hasRight('admin')">
-                                    <button type="button" class="classic-button" ng-click="vm.showLightbox('time')">
-                                        <i class="modif lg-icon icon-spacing"></i>
-                                    </button>
-                                </div>
+                                <i class="clock lg-icon icon-spacing"></i>
+                            <div class="flex" ng-if="hasRight('student')">[[vm.config.messages.time]]</div>
+                            <div class="flex" ng-if="hasRight('admin')">
+                                <div id="message-time" class="multilines" contenteditable="true" ng-blur="vm.saveMessage('message-time')">[[vm.config.messages.time]]</div>
+                                <button type="button" class="classic-button" ng-click="vm.focusText('message-time')">
+                                    <i class="modif lg-icon icon-spacing"></i>
+                                </button>
+                            </div>
                             </p>
                         </div>
                         <div class="flex">
                             <p>
-                                <i class="info-circled-1 lg-icon icon-spacing"></i>[[vm.config.messages.info]]
-                                <div ng-if="hasRight('admin')">
-                                    <button type="button" class="classic-button" ng-click="vm.showLightbox('info')">
-                                        <i class="modif lg-icon icon-spacing"></i>
-                                    </button>
-                                </div>
+                                <i class="info-circled-1 lg-icon icon-spacing"></i>
+                            <div class="flex" ng-if="hasRight('student')">[[vm.config.messages.info]]</div>
+                            <div class="flex" ng-if="hasRight('admin')">
+                                <div id="message-info" class="multilines" contenteditable="true" ng-blur="vm.saveMessage('message-info')">[[vm.config.messages.info]]</div>
+                                <button type="button" class="classic-button" ng-click="vm.focusText('message-info')">
+                                    <i class="modif lg-icon icon-spacing"></i>
+                                </button>
+                            </div>
                             </p>
                         </div>
                     </div>
