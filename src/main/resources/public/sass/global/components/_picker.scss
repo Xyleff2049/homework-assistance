@@ -51,6 +51,15 @@
       }
     }
 
+    td.day:hover {
+      background: #F0F0F0;
+      cursor: pointer;
+    }
+
+    tr td:hover {
+      background: #78daff !important;
+    }
+
     tr .active {
       background: $homeworkassistance-main;
     }

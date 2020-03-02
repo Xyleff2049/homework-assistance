@@ -11,6 +11,10 @@ body.homework-assistance {
     font-size: 12px;
   }
 
+  .material section.main {
+    padding-bottom: 20px;
+  }
+
   .title-row {
     @media screen and (max-width: 800px) {
       text-align: center;
@@ -27,7 +31,7 @@ body.homework-assistance {
   }
 
   .block-line {
-    margin-top: 3%;
+    margin-top: 2%;
     padding-right: 10px;
     @media screen and (max-width: 500px) {
       margin: 0;
@@ -101,5 +105,10 @@ body.homework-assistance {
 
   #other-informations {
     width: 80%;
+  }
+
+  .sending-button {
+    float: right;
+    margin-right: 20px;
   }
 }

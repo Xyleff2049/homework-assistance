@@ -26,7 +26,6 @@ interface ViewModel {
     getClassName(): string;
     showLightbox(string, number?): void;
     hideLightbox(string): void;
-    getTodayDate(): string;
     getTimeFormat(number): string;
     getHoursOpt(): number[];
     calculateMinutesOpt(): void;
@@ -219,10 +218,6 @@ export const homeController = ng.controller('HomeController', ['$scope', 'Config
         }
     };
 
-    vm.getTodayDate = (): string => {
-        return DateUtils.format(new Date(), DateUtils.FORMAT["YEAR-MONTH-DAY"]);
-    };
-
     vm.getTimeFormat = (n: number) : string => {
         let s = n.toString();
         if (s.length < 2) {
@@ -375,19 +370,33 @@ export const homeController = ng.controller('HomeController', ['$scope', 'Config
 
     const checkExclusion = (): boolean => {
         let safe = true;
-        vm.config.exclusions.forEach(exclusion => {
-            if (vm.exclusion.start > vm.exclusion.end) {
-                vm.error = 'adminReverseDate';
-                safe = false;
-            }
-            else if (
-                exclusion.start === vm.exclusion.start ||
-                exclusion.end === vm.exclusion.end ||
-                vm.exclusion.start > exclusion.start && vm.exclusion.end < exclusion.end) {
-                vm.error = 'adminExistingDate';
-                safe = false;
-            }
-        });
+
+        let startValues = vm.exclusion.start.split("/");
+        let endValues = vm.exclusion.end.split("/");
+
+        let startDate = new Date(parseInt(startValues[2]), parseInt(startValues[1])-1, parseInt(startValues[0]));
+        let endDate = new Date(parseInt(endValues[2]), parseInt(endValues[1])-1, parseInt(endValues[0])+1);
+
+        if (startDate > endDate) {
+            vm.error = 'adminReverseDate';
+            safe = false;
+        }
+        else {
+            vm.config.exclusions.forEach(ex => {
+                let exStartValues = ex.start.split("/");
+                let exEndValues = ex.end.split("/");
+
+                let exStartDate = new Date(parseInt(exStartValues[2]), parseInt(exStartValues[1])-1, parseInt(exStartValues[0]));
+                let exEndDate = new Date(parseInt(exEndValues[2]), parseInt(exEndValues[1])-1, parseInt(exEndValues[0])+1);
+
+                if (exStartDate === startDate ||
+                    exEndDate === endDate ||
+                    startDate > exStartDate && endDate < exEndDate) {
+                    vm.error = 'adminExistingDate';
+                    safe = false;
+                }
+            });
+        }
         return safe;
     };
 
