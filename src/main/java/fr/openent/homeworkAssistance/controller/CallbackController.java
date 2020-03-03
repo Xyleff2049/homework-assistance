@@ -1,6 +1,6 @@
 package fr.openent.homeworkAssistance.controller;
 import fr.openent.homeworkAssistance.HomeworkAssistance;
-import fr.openent.homeworkAssistance.service.CallbackService;
+import fr.openent.homeworkAssistance.service.ICallbackService;
 import fr.openent.homeworkAssistance.service.impl.DefaultCallbackService;
 import fr.wseduc.rs.*;
 import fr.wseduc.security.SecuredAction;
@@ -14,7 +14,7 @@ import static org.entcore.common.http.response.DefaultResponseHandler.defaultRes
 
 public class CallbackController extends ControllerHelper {
 
-    private CallbackService callbackService;
+    private ICallbackService callbackService;
 
     public CallbackController(Vertx vertx, JsonObject config) {
         super();

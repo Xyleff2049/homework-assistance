@@ -16,6 +16,10 @@
         La date indiquée est déjà passée. Veuillez essayer une autre date.
         <input type="button" class="inline stick-right" ng-click="vm.hideLightbox('error')" i18n-value="admin.close" />
     </div>
+    <div ng-if="vm.error == 'adminOldDate'" class="flex-lightbox">
+        Une période de fermeture ne peut commencer avant la date d'aujourd'hui. Veuillez essayer une autre date.
+        <input type="button" class="inline stick-right" ng-click="vm.hideLightbox('error')" i18n-value="admin.close" />
+    </div>
     <div ng-if="vm.error == 'adminExistingDate'" class="flex-lightbox">
         Ces dates correspondent déjà à une autre période de fermeture. Veuillez essayer d'autres dates.
         <input type="button" class="inline stick-right" ng-click="vm.hideLightbox('error')" i18n-value="admin.close" />

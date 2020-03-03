@@ -1,8 +1,7 @@
 package fr.openent.homeworkAssistance.controller;
 
 import fr.openent.homeworkAssistance.HomeworkAssistance;
-import fr.openent.homeworkAssistance.security.UpdateConfigRight;
-import fr.openent.homeworkAssistance.service.ConfigurationService;
+import fr.openent.homeworkAssistance.service.IConfigurationService;
 import fr.openent.homeworkAssistance.service.impl.DefaultConfigurationService;
 import fr.wseduc.rs.*;
 import fr.wseduc.security.SecuredAction;
@@ -14,7 +13,7 @@ import static org.entcore.common.http.response.DefaultResponseHandler.defaultRes
 
 public class ConfigurationController extends ControllerHelper {
 
-    private ConfigurationService configurationService;
+    private IConfigurationService configurationService;
 
     public ConfigurationController() {
         super();

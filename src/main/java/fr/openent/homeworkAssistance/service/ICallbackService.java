@@ -3,7 +3,7 @@ import fr.wseduc.webutils.Either;
 import io.vertx.core.Handler;
 import io.vertx.core.json.JsonObject;
 
-public interface CallbackService {
+public interface ICallbackService {
 
     /**
      * send data to Kiamo

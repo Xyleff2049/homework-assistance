@@ -1,12 +1,12 @@
 package fr.openent.homeworkAssistance.service.impl;
 
-import fr.openent.homeworkAssistance.service.ConfigurationService;
+import fr.openent.homeworkAssistance.service.IConfigurationService;
 import fr.wseduc.webutils.Either;
 import io.vertx.core.Handler;
 import io.vertx.core.json.JsonObject;
 import org.entcore.common.service.impl.MongoDbCrudService;
 
-public class DefaultConfigurationService extends MongoDbCrudService implements ConfigurationService {
+public class DefaultConfigurationService extends MongoDbCrudService implements IConfigurationService {
 
     public DefaultConfigurationService(String collection) {
         super(collection);

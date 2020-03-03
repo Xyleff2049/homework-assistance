@@ -4,7 +4,7 @@ import fr.wseduc.webutils.Either;
 import io.vertx.core.Handler;
 import io.vertx.core.json.JsonObject;
 
-public interface ConfigurationService {
+public interface IConfigurationService {
 
     /**
      * get platform configuration

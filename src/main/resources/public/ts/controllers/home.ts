@@ -60,7 +60,7 @@ export const homeController = ng.controller('HomeController', ['$scope', 'Config
         if (dayValid && dateValid && timeValid) {
             let response = await callbackService.post(vm.callback);
             if (response.status == 200 || response.status == 201) {
-                printCallbackData(response.data.body);
+                // console.log(JSON.parse(response.data.body.parameters.toString()));
                 toasts.confirm(idiom.translate('student.send'));
             } else {
                 toasts.warning(response.data.toString());
@@ -330,11 +330,8 @@ export const homeController = ng.controller('HomeController', ['$scope', 'Config
             return false;
         }
         vm.config.exclusions.forEach( ex => {
-            let startValues = ex.start.split("/");
-            let endValues = ex.end.split("/");
-
-            let startDate = new Date(parseInt(startValues[2]), parseInt(startValues[1])-1, parseInt(startValues[0]));
-            let endDate = new Date(parseInt(endValues[2]), parseInt(endValues[1])-1, parseInt(endValues[0])+1);
+            let startDate = getDate(ex.start);
+            let endDate = getDate(ex.end);
 
             // Check is the selected date is available (not in closed period)
             if (startDate <= vm.callback.callback_date && vm.callback.callback_date < endDate) {
@@ -369,43 +366,39 @@ export const homeController = ng.controller('HomeController', ['$scope', 'Config
     };
 
     const checkExclusion = (): boolean => {
-        let safe = true;
+        let today = new Date();
+        today.setDate(today.getDate() - 1);
+        let startDate = getDate(vm.exclusion.start);
+        let endDate = getDate(vm.exclusion.end);
 
-        let startValues = vm.exclusion.start.split("/");
-        let endValues = vm.exclusion.end.split("/");
-
-        let startDate = new Date(parseInt(startValues[2]), parseInt(startValues[1])-1, parseInt(startValues[0]));
-        let endDate = new Date(parseInt(endValues[2]), parseInt(endValues[1])-1, parseInt(endValues[0])+1);
-
-        if (startDate > endDate) {
+        if (startDate < today) {
+            vm.error = 'adminOldDate';
+            return false;
+        }
+        else if (startDate > endDate) {
             vm.error = 'adminReverseDate';
-            safe = false;
+            return false;
         }
         else {
+            let safe = true;
             vm.config.exclusions.forEach(ex => {
-                let exStartValues = ex.start.split("/");
-                let exEndValues = ex.end.split("/");
+                let exStartDate = getDate(ex.start);
+                let exEndDate = getDate(ex.end);
 
-                let exStartDate = new Date(parseInt(exStartValues[2]), parseInt(exStartValues[1])-1, parseInt(exStartValues[0]));
-                let exEndDate = new Date(parseInt(exEndValues[2]), parseInt(exEndValues[1])-1, parseInt(exEndValues[0])+1);
-
-                if (exStartDate === startDate ||
-                    exEndDate === endDate ||
+                if (startDate - exStartDate === 0 ||
+                    endDate - exEndDate === 0 ||
                     startDate > exStartDate && endDate < exEndDate) {
                     vm.error = 'adminExistingDate';
                     safe = false;
                 }
             });
+            return safe;
         }
-        return safe;
     };
 
     const sortExclusion = (ex1:Exclusion, ex2:Exclusion): number => {
-        let startValues1 = ex1.start.split("/");
-        let startValues2 = ex2.start.split("/");
-
-        let date1 = new Date(parseInt(startValues1[2]), parseInt(startValues1[1])-1, parseInt(startValues1[0]));
-        let date2 = new Date(parseInt(startValues2[2]), parseInt(startValues2[1])-1, parseInt(startValues2[0])+1);
+        let date1 = getDate(ex1.start);
+        let date2 = getDate(ex2.start);
 
         if (date1 > date2) {
             return 1;
@@ -418,9 +411,10 @@ export const homeController = ng.controller('HomeController', ['$scope', 'Config
         }
     };
 
-    const printCallbackData = (data: any): void => {
-        console.log(JSON.parse(data.parameters.toString()));
-    };
+    const getDate = (stringDate:string) : any => {
+        let values = stringDate.split("/");
+        return new Date(parseInt(values[2]), parseInt(values[1])-1, parseInt(values[0]));
+    }
 
 
     const init = async (): Promise<void> => {

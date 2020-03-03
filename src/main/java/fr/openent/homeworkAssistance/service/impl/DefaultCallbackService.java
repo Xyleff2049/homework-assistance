@@ -1,16 +1,14 @@
 package fr.openent.homeworkAssistance.service.impl;
 import fr.openent.homeworkAssistance.helper.KiamoHelper;
-import fr.openent.homeworkAssistance.service.CallbackService;
+import fr.openent.homeworkAssistance.service.ICallbackService;
 import fr.wseduc.webutils.Either;
-import io.vertx.core.AsyncResult;
 import io.vertx.core.Handler;
 import io.vertx.core.Vertx;
-import io.vertx.core.buffer.Buffer;
 import io.vertx.core.json.JsonObject;
 import io.vertx.core.logging.Logger;
 import io.vertx.core.logging.LoggerFactory;
 
-public class DefaultCallbackService implements CallbackService {
+public class DefaultCallbackService implements ICallbackService {
     private Vertx vertx;
     private JsonObject config;
 
