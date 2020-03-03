@@ -67,6 +67,7 @@
 
         .info-txt {
           flex: 1 1 0;
+          align-self: flex-start;
           @media screen and (min-width: 800px) and (max-width: 1000px) {
             align-self: center;
           }
