@@ -286,12 +286,10 @@ export const homeController = ng.controller('HomeController', ['$scope', 'Config
         if (response.status == 200 || response.status == 201) {
             vm.config.mongoToModel(response.data);
         }
-        // console.log("loadConfig");
-        // console.log(vm.config);
         $scope.safeApply();
     };
 
-    const loadCallback = async () => {
+    const loadCallback = async (): Promise<void> => {
             vm.callback.userdata.prenom = model.me.firstName;
             vm.callback.userdata.nom = model.me.lastName;
             vm.callback.userdata.etablissement = model.me.structureNames[0];
@@ -301,8 +299,6 @@ export const homeController = ng.controller('HomeController', ['$scope', 'Config
             vm.callback.callback_date = new Date();
             vm.callback.callback_time.hour = vm.config.times.start.hour;
             vm.calculateMinutesOpt();
-            // console.log("loadCallback");
-            // console.log(vm.callback);
             $scope.safeApply();
         };
 
@@ -323,9 +319,11 @@ export const homeController = ng.controller('HomeController', ['$scope', 'Config
 
     const checkCallbackDate = (): boolean => {
         let check = true;
+        let callbackDate: Date = vm.callback.callback_date;
+        callbackDate.setHours(0,0,0,0);
         let today = new Date();
         today.setDate(today.getDate() - 1);
-        if (vm.callback.callback_date < today) {
+        if (callbackDate < today) {
             vm.error = 'studentOldDate';
             return false;
         }
@@ -334,7 +332,7 @@ export const homeController = ng.controller('HomeController', ['$scope', 'Config
             let endDate = getDate(ex.end);
 
             // Check is the selected date is available (not in closed period)
-            if (startDate <= vm.callback.callback_date && vm.callback.callback_date < endDate) {
+            if (startDate <= callbackDate && callbackDate <= endDate) {
                 vm.error = 'studentClosedDate';
                 vm.exclusion = ex;
                 check = false;
@@ -415,7 +413,6 @@ export const homeController = ng.controller('HomeController', ['$scope', 'Config
         let values = stringDate.split("/");
         return new Date(parseInt(values[2]), parseInt(values[1])-1, parseInt(values[0]));
     }
-
 
     const init = async (): Promise<void> => {
         await loadConfig();
