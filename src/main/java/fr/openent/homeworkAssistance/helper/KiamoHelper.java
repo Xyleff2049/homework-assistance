@@ -39,7 +39,7 @@ public class KiamoHelper extends ControllerHelper {
     private void generateUrl() {
         if (this.config.getJsonObject("kiamo") != null) {
             String address = this.config.getJsonObject("kiamo").getString("server");
-            String service = this.body.getJsonObject("userdata").getString("service");
+            String service = this.body.getJsonObject("userdata").getInteger("service").toString();
             String key = this.config.getJsonObject("kiamo").getString("key");
 
             this.url = address + service + "/tasks?token=" + key;
@@ -53,13 +53,6 @@ public class KiamoHelper extends ControllerHelper {
     public void setHost(Vertx vertx) {
         try {
             URI uri = new URI(this.url);
-//            HttpClientOptions options = new HttpClientOptions()
-//                    .setDefaultHost(this.url)
-//                    .setDefaultPort("https".equals(uri.getScheme()) ? 443 : 80)
-//                    .setSsl("https".equals(uri.getScheme()))
-//                    .setKeepAlive(true)
-//                    .setVerifyHost(false)
-//                    .setTrustAll(true);
 
             HttpClientOptions options = new HttpClientOptions()
                     .setSsl("https".equals(uri.getScheme()))

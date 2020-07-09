@@ -28,4 +28,10 @@ public class CallbackController extends ControllerHelper {
     public void send(HttpServerRequest request) {
         RequestUtils.bodyToJson(request, form -> callbackService.send(form, defaultResponseHandler(request)));
     }
+
+    @Get("/services/all")
+    @ApiDoc("Get services from config")
+    public void get(HttpServerRequest request) {
+        callbackService.getServices(defaultResponseHandler(request));
+    }
 }

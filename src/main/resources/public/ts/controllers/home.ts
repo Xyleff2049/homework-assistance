@@ -1,5 +1,5 @@
 import {idiom, model, ng, template, toasts} from 'entcore';
-import {Callback, services} from '../models/Callback';
+import {Callback} from '../models/Callback';
 import {Config, Exclusion} from '../models/Config';
 import {DateUtils} from '../utils/date';
 import {callbackService, configService} from '../services';
@@ -16,6 +16,7 @@ interface ViewModel {
         add: boolean,
         error: boolean
     };
+    services: {};
 
     sendForm(): Promise<void>;
     saveConfig(): Promise<void>;
@@ -29,6 +30,7 @@ interface ViewModel {
     getTimeFormat(number): string;
     getHoursOpt(): number[];
     calculateMinutesOpt(): void;
+    getServices(): Promise<void>;
 }
 
 
@@ -51,6 +53,7 @@ export const homeController = ng.controller('HomeController', ['$scope', 'Config
         add: false,
         error: false
     };
+    vm.services = {};
 
 
     vm.sendForm = async (): Promise<void> => {
@@ -59,7 +62,7 @@ export const homeController = ng.controller('HomeController', ['$scope', 'Config
         let timeValid = checkCallbackTime();
         if (dayValid && dateValid && timeValid) {
             let response = await callbackService.post(vm.callback);
-            if (response.status == 200 || response.status == 201) {
+            if (response.status == 200) {
                 // console.log(JSON.parse(response.data.body.parameters.toString()));
                 toasts.confirm(idiom.translate('student.send'));
             } else {
@@ -281,6 +284,7 @@ export const homeController = ng.controller('HomeController', ['$scope', 'Config
     };
 
 
+
     const loadConfig = async (): Promise<void> => {
         let response = await configService.get();
         if (response.status == 200 || response.status == 201) {
@@ -294,8 +298,8 @@ export const homeController = ng.controller('HomeController', ['$scope', 'Config
             vm.callback.userdata.nom = model.me.lastName;
             vm.callback.userdata.etablissement = model.me.structureNames[0];
             vm.callback.userdata.classe = await vm.getClassName();
-            vm.callback.userdata.service = "76"; // Set Français as default selected option
-            vm.callback.userdata.matiere = services[vm.callback.userdata.service];
+            vm.callback.userdata.matiere = Object.keys(vm.services)[0];
+            vm.callback.userdata.service = vm.services[vm.callback.userdata.matiere];
             vm.callback.callback_date = new Date();
             vm.callback.callback_time.hour = vm.config.times.start.hour;
             vm.calculateMinutesOpt();
@@ -414,11 +418,17 @@ export const homeController = ng.controller('HomeController', ['$scope', 'Config
         return new Date(parseInt(values[2]), parseInt(values[1])-1, parseInt(values[0]));
     }
 
+    const getServices = async (): Promise<void> => {
+        let response = await callbackService.getServices();
+        vm.services = response.data;
+        $scope.safeApply();
+    };
+
     const init = async (): Promise<void> => {
         await loadConfig();
         if ($scope.hasRight('student')) {
-            await loadCallback();
-        }
+            await getServices();
+            await loadCallback();        }
     };
 
     init();

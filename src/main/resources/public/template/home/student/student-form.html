@@ -11,11 +11,7 @@
         <div class="block-line">
             <p><i18n>student.subject</i18n></p>
             <select ng-model="vm.callback.userdata.service" required>
-                <option id="Francais" value="76">Français</option>
-                <option id="Anglais" value="80">Anglais</option>
-                <option id="Espagnol" value="81">Espagnol</option>
-                <option id="Mathematiques" value="77">Mathématiques</option>
-                <option id="Sciences-physiques" value="78">Sciences physiques</option>
+                <option ng-repeat="(name, number) in vm.services" value="[[number]]">[[name]]</option>
             </select>
         </div>
         <div class="block-line">

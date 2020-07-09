@@ -10,4 +10,9 @@ public interface ICallbackService {
      */
     void send(JsonObject form, Handler<Either<String, JsonObject>> handler);
 
+    /**
+     * get services names and keys
+     */
+    void getServices(Handler<Either<String, JsonObject>> handler);
+
 }

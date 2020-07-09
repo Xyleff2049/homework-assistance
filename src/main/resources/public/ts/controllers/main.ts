@@ -20,9 +20,13 @@ export const mainController = ng.controller('MainController', ['$scope', 'route'
     $scope.safeApply = function (fn?) {
         const phase = $scope.$root.$$phase;
         if (phase == '$apply' || phase == '$digest') {
-            $scope.$apply();
+            if (fn && (typeof (fn) === 'function')) {
+                fn();
+            }
+        } else {
+            $scope.$apply(fn);
         }
-    }
+    };
 
     $scope.hasRight = function (right: string) {
         return model.me.hasWorkflow(rights.workflow[right]);

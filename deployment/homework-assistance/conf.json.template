@@ -18,5 +18,12 @@
       "key": "${kiamo_key}",
       "server": "${kiamo_server}"
     }
+    "services": {
+        "Anglais": 80,
+        "Espagnol": 81,
+        "Français": 76,
+        "Maths": 77,
+        "Physique": 78,
+    }
   }
 }

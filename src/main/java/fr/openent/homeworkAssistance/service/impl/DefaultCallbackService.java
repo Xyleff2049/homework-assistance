@@ -2,6 +2,7 @@ package fr.openent.homeworkAssistance.service.impl;
 import fr.openent.homeworkAssistance.helper.KiamoHelper;
 import fr.openent.homeworkAssistance.service.ICallbackService;
 import fr.wseduc.webutils.Either;
+import fr.wseduc.webutils.I18n;
 import io.vertx.core.Handler;
 import io.vertx.core.Vertx;
 import io.vertx.core.json.JsonObject;
@@ -25,10 +26,16 @@ public class DefaultCallbackService implements ICallbackService {
             if (event.succeeded()) {
                 log.info("[HomeworkAssistance@Kiamo] Form sent to Kiamo");
                 log.info("[HomeworkAssistance@Kiamo] " + event.result().toString());
-                handler.handle(new Either.Right(event.result().toString()));
+                handler.handle(new Either.Right(new JsonObject()));
             } else {
-                handler.handle(new Either.Left<>("[HomeworkAssistance@Kiamo] Fail to send the form"));
+                handler.handle(new Either.Left<>("Fail to send the form"));
             }
         });
+    }
+
+    @Override
+    public void getServices(Handler<Either<String, JsonObject>> handler) {
+        JsonObject services = config.getJsonObject("services") != null ? config.getJsonObject("services") : new JsonObject();
+        handler.handle(new Either.Right(services));
     }
 }

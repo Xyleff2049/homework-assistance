@@ -1,11 +1,3 @@
-export const services = {
-    80: "Anglais",
-    81: "Espagnol",
-    76: "Français",
-    77: "Mathématiques",
-    78: "Physique"
-};
-
 export class Time {
     hour: number;
     minute: number;
