@@ -25,7 +25,7 @@ public class DefaultCallbackService implements ICallbackService {
             if (event.succeeded()) {
                 log.info("[HomeworkAssistance@Kiamo] Form sent to Kiamo");
                 log.info("[HomeworkAssistance@Kiamo] " + event.result().toString());
-                handler.handle(new Either.Right(event.result().toJsonObject()));
+                handler.handle(new Either.Right(event.result().toString()));
             } else {
                 handler.handle(new Either.Left<>("[HomeworkAssistance@Kiamo] Fail to send the form"));
             }

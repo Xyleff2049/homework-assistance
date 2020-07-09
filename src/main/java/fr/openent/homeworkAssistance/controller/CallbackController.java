@@ -26,7 +26,6 @@ public class CallbackController extends ControllerHelper {
     @SecuredAction(HomeworkAssistance.STUDENT)
     @Trace("SEND_FORM")
     public void send(HttpServerRequest request) {
-        RequestUtils.bodyToJson(request, form ->
-                callbackService.send(form, defaultResponseHandler(request)));
+        RequestUtils.bodyToJson(request, form -> callbackService.send(form, defaultResponseHandler(request)));
     }
 }

@@ -5,15 +5,19 @@ import io.vertx.core.Future;
 import io.vertx.core.Handler;
 import io.vertx.core.Vertx;
 import io.vertx.core.json.JsonObject;
+import io.vertx.core.json.JsonArray;
 import io.vertx.core.buffer.Buffer;
 import io.vertx.core.http.HttpClient;
 import io.vertx.core.http.HttpClientOptions;
 import io.vertx.core.http.HttpClientRequest;
 import io.vertx.core.logging.Logger;
 import io.vertx.core.logging.LoggerFactory;
+import io.vertx.core.net.ProxyOptions;
 import org.entcore.common.controller.ControllerHelper;
+
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.time.*;
 
 public class KiamoHelper extends ControllerHelper {
 
@@ -49,14 +53,28 @@ public class KiamoHelper extends ControllerHelper {
     public void setHost(Vertx vertx) {
         try {
             URI uri = new URI(this.url);
-            HttpClientOptions opts = new HttpClientOptions()
-                    .setDefaultHost(this.url)
-                    .setDefaultPort("https".equals(uri.getScheme()) ? 443 : 80)
+//            HttpClientOptions options = new HttpClientOptions()
+//                    .setDefaultHost(this.url)
+//                    .setDefaultPort("https".equals(uri.getScheme()) ? 443 : 80)
+//                    .setSsl("https".equals(uri.getScheme()))
+//                    .setKeepAlive(true)
+//                    .setVerifyHost(false)
+//                    .setTrustAll(true);
+
+            HttpClientOptions options = new HttpClientOptions()
                     .setSsl("https".equals(uri.getScheme()))
                     .setKeepAlive(true)
                     .setVerifyHost(false)
                     .setTrustAll(true);
-            this.httpClient = vertx.createHttpClient(opts);
+
+            if (config.getJsonObject("proxy") != null) {
+                ProxyOptions proxyOptions = new ProxyOptions()
+                        .setHost(config.getJsonObject("proxy").getString("host"))
+                        .setPort(config.getJsonObject("proxy").getInteger("port"));
+                options.setProxyOptions(proxyOptions);
+            }
+
+            this.httpClient = vertx.createHttpClient(options);
         } catch (URISyntaxException e) {
             log.error("[HomeworkAssistance@Kiamo] Wrong URI : " + this.url, e);
         }
@@ -93,17 +111,41 @@ public class KiamoHelper extends ControllerHelper {
             log.error(event.getMessage(), event.getCause());
         });
 
-        request.putHeader("Kiamo-API-Token", this.config.getJsonObject("kiamo").getString("key"));
-        request.putHeader("Content-type", "application/x-www-form-urlencoded");
+        request.setChunked(true);
 
-        if (this.body != null) {
-            request.setChunked(true);
+        JsonArray parameters = mapBody(this.body);
+        String encodedParameters = parameters.encode();
 
-            JsonObject parameters = this.body;
-            String encodedParameters = parameters.encode();
-
-            request.write("parameters=").write(encodedParameters);
-        }
+        request.write(encodedParameters);
+        request.putHeader("Kiamo-Api-Token", this.config.getJsonObject("kiamo").getString("key"));
+        request.putHeader("Content-type", "application/json");
+        request.putHeader("Content-Length", String.valueOf(encodedParameters.length()));
         request.end();
+    }
+
+    private JsonArray mapBody(JsonObject body) {
+        JsonObject userdata = body.getJsonObject("userdata");
+        JsonObject exportedBody = new JsonObject();
+
+        exportedBody.put("destination", body.getString("destination"));
+
+        // Parse callback_date
+        String dateTime = body.getString("callback_date").substring(0, 11) +
+                body.getJsonObject("callback_time").getValue("hour") + ":" +
+                body.getJsonObject("callback_time").getInteger("minute") + ":00" +
+                OffsetTime.ofInstant(Instant.now(), ZoneId.of("Europe/Paris")).getOffset(); // Give local UTC offset
+        exportedBody.put("callback_date", dateTime);
+
+        // Map userdata
+        JsonObject exportedData = new JsonObject();
+        exportedData.put("prenom_eleve", userdata.getString("prenom"));
+        exportedData.put("nom_eleve", userdata.getString("nom"));
+        exportedData.put("etablissement", userdata.getString("etablissement"));
+        exportedData.put("classe", userdata.getString("classe"));
+        exportedData.put("matiere_aide", userdata.getString("matiere"));
+        exportedData.put("informations_complementaires", body.getString("informations_complementaires"));
+        exportedBody.put("userdata", exportedData);
+
+        return new JsonArray().add(exportedBody);
     }
 }
