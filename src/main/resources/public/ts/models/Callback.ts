@@ -8,7 +8,7 @@ export class Userdata {
     nom: string;
     etablissement: string;
     classe: string;
-    service: string;
+    service: number;
     matiere: string;
 }
 

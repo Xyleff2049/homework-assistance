@@ -2,7 +2,6 @@ package fr.openent.homeworkAssistance.service.impl;
 import fr.openent.homeworkAssistance.helper.KiamoHelper;
 import fr.openent.homeworkAssistance.service.ICallbackService;
 import fr.wseduc.webutils.Either;
-import fr.wseduc.webutils.I18n;
 import io.vertx.core.Handler;
 import io.vertx.core.Vertx;
 import io.vertx.core.json.JsonObject;

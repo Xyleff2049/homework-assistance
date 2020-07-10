@@ -38,18 +38,19 @@ public class KiamoHelper extends ControllerHelper {
 
     private void generateUrl() {
         if (this.config.getJsonObject("kiamo") != null) {
-            String address = this.config.getJsonObject("kiamo").getString("server");
-            String service = this.body.getJsonObject("userdata").getInteger("service").toString();
-            String key = this.config.getJsonObject("kiamo").getString("key");
+            try {
+                String server = this.config.getJsonObject("kiamo").getString("server");
+                String service = this.body.getJsonObject("userdata").getValue("service").toString();
+                String key = this.config.getJsonObject("kiamo").getString("key");
 
-            this.url = address + service + "/tasks?token=" + key;
+                this.url = server + "/api/services/" + service + "/tasks?token=" + key;
+            }
+            catch (Exception e) {
+                log.error("[HomeworkAssistance@Kiamo] Fail to create url", e);
+            }
         }
     }
 
-    /**
-     * Create default HttpClient
-     * @return new HttpClient
-     */
     public void setHost(Vertx vertx) {
         try {
             URI uri = new URI(this.url);
@@ -68,7 +69,8 @@ public class KiamoHelper extends ControllerHelper {
             }
 
             this.httpClient = vertx.createHttpClient(options);
-        } catch (URISyntaxException e) {
+        }
+        catch (URISyntaxException e) {
             log.error("[HomeworkAssistance@Kiamo] Wrong URI : " + this.url, e);
         }
     }
