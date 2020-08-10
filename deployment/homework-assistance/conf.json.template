@@ -17,7 +17,7 @@
     "kiamo": {
       "key": "${kiamo_key}",
       "server": "${kiamo_server}"
-    }
+    },
     "services": {
         "Anglais": 80,
         "Espagnol": 81,
