@@ -1,5 +1,5 @@
 {
-  "name": "fr.openent~homework-assistance~0.1.0",
+  "name": "fr.openent~homework-assistance~0.1.1",
   "config": {
     "main" : "fr.openent.homeworkAssistance.HomeworkAssistance",
     "port" : 8330,
