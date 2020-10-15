@@ -12,6 +12,13 @@
   "student.otherInformations" : "Informations complémentaires",
   "student.validate": "Envoyer ma demande",
   "student.send": "Formulaire envoyé",
+  "student.error.studentTime": "",
+  "student.error.studentWrongDay": "Ce jour de la semaine est indisponible. Veuillez essayer une autre date.",
+  "student.error.studentClosedDate": "",
+  "student.error.studentOldDate": "La date indiquée est déjà passée. Veuillez essayer une autre date.",
+  "student.error.sendForm": "Une erreur est survenue lors de l'envoi du formulaire.",
+  "student.error.getServices": "Une erreur est survenue lors de la récupération des matières disponibles.",
+  "student.error.noConfig": "Un problème empêche l'envoi de nouvelles demandes. Veuillez revenir plus tard.",
 
   "admin.title": "Paramétrage du service Aide aux devoirs",
   "admin.period.title": "Période(s) de fermeture",
@@ -25,7 +32,6 @@
   "admin.availabilityHours.from": "De :",
   "admin.availabilityHours.connector": "h",
   "admin.availabilityHours.to": "A  :",
-
   "admin.monday": "L",
   "admin.tuesday": "M",
   "admin.wednesday": "M",
@@ -33,9 +39,14 @@
   "admin.friday": "V",
   "admin.saturday": "S",
   "admin.sunday": "D",
-
   "admin.validate": "Valider",
   "admin.cancel": "Annuler",
   "admin.close": "Fermer",
-  "admin.save": "Modification enregistrée"
+  "admin.save": "Modification enregistrée",
+  "admin.error.adminOldDate": "Une période de fermeture ne peut commencer avant la date d'aujourd'hui. Veuillez essayer une autre date.",
+  "admin.error.adminExistingDate": "Ces dates correspondent déjà à une autre période de fermeture. Veuillez essayer d'autres dates.",
+  "admin.error.adminReverseDate": "Attention, la date de début est supérieure ou égale à la date de fin. Veuillez essayer d'autres dates.",
+  "admin.error.adminReverseTime": "Attention, l'heure de début est supérieure ou égale à l'heure de fin. Veuillez essayer d'autres heures.",
+  "admin.error.noConfig": "Aucune configuration existante. Veuillez modifier/renseigner au moins un champ.",
+  "admin.error.postConfig": "Un problème est survenu lors de l'enregistrement de la configuration"
 }

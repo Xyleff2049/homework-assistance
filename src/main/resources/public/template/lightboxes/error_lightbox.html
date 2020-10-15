@@ -5,7 +5,7 @@
         <input type="button" class="inline stick-right" ng-click="vm.hideLightbox('error')" i18n-value="admin.close" />
     </div>
     <div ng-if="vm.error == 'studentWrongDay'" class="flex-lightbox">
-        Ce jour de la semaine est indisponible. Veuillez essayer une autre date.
+        <i18n>student.error.studentWrongDay</i18n>
         <input type="button" class="inline stick-right" ng-click="vm.hideLightbox('error')" i18n-value="admin.close" />
     </div>
     <div ng-if="vm.error == 'studentClosedDate'" class="flex-lightbox">
@@ -13,23 +13,31 @@
         <input type="button" class="inline stick-right" ng-click="vm.hideLightbox('error')" i18n-value="admin.close" />
     </div>
     <div ng-if="vm.error == 'studentOldDate'" class="flex-lightbox">
-        La date indiquée est déjà passée. Veuillez essayer une autre date.
+        <i18n>student.error.studentOldDate</i18n>
+        <input type="button" class="inline stick-right" ng-click="vm.hideLightbox('error')" i18n-value="admin.close" />
+    </div>
+    <div ng-if="vm.error == 'studentNoConfig'" class="flex-lightbox">
+        <i18n i18n-value="test">student.error.noConfig</i18n>
         <input type="button" class="inline stick-right" ng-click="vm.hideLightbox('error')" i18n-value="admin.close" />
     </div>
     <div ng-if="vm.error == 'adminOldDate'" class="flex-lightbox">
-        Une période de fermeture ne peut commencer avant la date d'aujourd'hui. Veuillez essayer une autre date.
+        <i18n>admin.error.adminOldDate</i18n>
         <input type="button" class="inline stick-right" ng-click="vm.hideLightbox('error')" i18n-value="admin.close" />
     </div>
     <div ng-if="vm.error == 'adminExistingDate'" class="flex-lightbox">
-        Ces dates correspondent déjà à une autre période de fermeture. Veuillez essayer d'autres dates.
+        <i18n>admin.error.adminExistingDate</i18n>
         <input type="button" class="inline stick-right" ng-click="vm.hideLightbox('error')" i18n-value="admin.close" />
     </div>
     <div ng-if="vm.error == 'adminReverseDate'" class="flex-lightbox">
-        Attention, la date de début est supérieure à la date de fin. Veuillez essayer d'autres dates.
+        <i18n>admin.error.adminReverseDate</i18n>
         <input type="button" class="inline stick-right" ng-click="vm.hideLightbox('error')" i18n-value="admin.close" />
     </div>
     <div ng-if="vm.error == 'adminReverseTime'" class="flex-lightbox">
-        Attention, l'heure de début est supérieure à l'heure de fin. Veuillez essayer d'autres heures.
+        <i18n>admin.error.adminReverseTime</i18n>
+        <input type="button" class="inline stick-right" ng-click="vm.hideLightbox('error')" i18n-value="admin.close" />
+    </div>
+    <div ng-if="vm.error == 'adminNoConfig'" class="flex-lightbox">
+        <i18n>admin.error.noConfig</i18n>
         <input type="button" class="inline stick-right" ng-click="vm.hideLightbox('error')" i18n-value="admin.close" />
     </div>
 </lightbox>

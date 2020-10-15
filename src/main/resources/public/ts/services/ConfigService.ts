@@ -1,4 +1,4 @@
-import {ng} from 'entcore';
+import {ng, toasts, idiom} from 'entcore';
 import http, {AxiosResponse} from 'axios';
 import {Config} from '../models/Config';
 
@@ -21,6 +21,7 @@ export const configService: ConfigService = {
         try {
             return await http.put('/homework-assistance/config', config.toJson());
         } catch (err) {
+            toasts.warning(idiom.translate('admin.error.postConfig'));
             throw err;
         }
     }

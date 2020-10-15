@@ -286,9 +286,15 @@ export const homeController = ng.controller('HomeController', ['$scope', 'Config
 
 
     const loadConfig = async (): Promise<void> => {
-        let response = await configService.get();
-        if (response.status == 200 || response.status == 201) {
-            vm.config.mongoToModel(response.data);
+        try {
+            let response = await configService.get();
+            if (response.status == 200 || response.status == 201) {
+                vm.config.mongoToModel(response.data)
+            }
+        }
+        catch (err) {
+            vm.error = $scope.hasRight('admin') ? 'adminNoConfig' : 'studentNoConfig';
+            vm.showLightbox('error');
         }
         $scope.safeApply();
     };
@@ -428,7 +434,8 @@ export const homeController = ng.controller('HomeController', ['$scope', 'Config
         await loadConfig();
         if ($scope.hasRight('student')) {
             await getServices();
-            await loadCallback();        }
+            await loadCallback();
+        }
     };
 
     init();

@@ -1,4 +1,4 @@
-import {ng} from 'entcore';
+import {idiom, ng, toasts} from 'entcore';
 import http, {AxiosResponse} from 'axios';
 import {Callback} from '../models/Callback';
 
@@ -13,6 +13,7 @@ export const callbackService: CallbackService = {
         try {
             return await http.post(`/homework-assistance/services/${callback.userdata.service}/callback`, callback);
         } catch (err) {
+            toasts.warning(idiom.translate('student.error.sendForm'));
             throw err;
         }
     },
@@ -21,6 +22,7 @@ export const callbackService: CallbackService = {
         try {
             return await http.get("/homework-assistance/services/all");
         } catch (err) {
+            toasts.warning(idiom.translate('student.error.getServices'));
             throw err;
         }
     }

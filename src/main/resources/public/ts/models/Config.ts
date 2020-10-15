@@ -29,11 +29,21 @@ export class Week {
 export class Times {
     start: Time;
     end: Time;
+
+    constructor(start?: any, end?: any) {
+        this.start = start ? start : new Time(10,0);
+        this.end = end ? end : new Time(21, 0);
+    }
 }
 
 export class Time {
     hour: number;
     minute: number;
+
+    constructor(hour?:number, minute?:number) {
+        this.hour = hour?hour:10;
+        this.minute = minute?minute:0;
+    }
 }
 
 export class Config {
